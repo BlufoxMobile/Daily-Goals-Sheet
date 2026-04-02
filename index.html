@@ -267,12 +267,23 @@ function calc(s) {
   var accD = accNeed === 0 ? accSteady : Math.ceil(accNeed / f.rem);
 
   // 5. GP (Calendar)
-  var gpOver = s.gpEst >= s.gpTgt;
-  var gpGoal = gpOver ? s.gpTrend : s.gpTgt;
+  // If net target < $40k, boost by $10k to push struggling stores toward profitability.
+  // Always use whichever is higher: the (boosted) target or the trend.
+  // This ensures stores that are excelling keep pushing to their trend.
+  var gpTarget = s.gpTgt;
+  if (gpTarget < 40000) gpTarget = gpTarget + 10000;
+  var gpGoal = Math.max(gpTarget, s.gpTrend);
   var gpD = Math.max(1, Math.ceil(gpGoal / c.tot));
 
+  // Subtract watches/tablets from mobile display if mobile > 10
+  // (watches+tablets count toward MCR, so showing both avoids overwhelming the team)
+  var mobDisplay = mobD;
+  if (mobD > 10) {
+    mobDisplay = Math.max(1, mobD - wtD);
+  }
+
   return {
-    mob: { d:mobD },
+    mob: { d:mobDisplay },
     rgu: { d:rguD },
     wt:  { d:wtD },
     acc: { d:accD },
