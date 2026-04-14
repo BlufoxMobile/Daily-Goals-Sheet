@@ -223,6 +223,7 @@ function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
           });
         }
         
+        document.getElementById('dash').style.display = 'block';
         render();
         var pbtn = document.getElementById('pbtn');
         if (pbtn) pbtn.style.display = '';
