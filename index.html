@@ -395,8 +395,8 @@ function render() {
   var rg = document.getElementById('rsel').value;
   var stores = [];
   for (var i=0; i<S.length; i++) {
-    if (S[i].dm !== dm) continue;
-    if (rg !== 'ALL' && S[i].region !== rg) continue;
+    if (dm !== '' && S[i].dm !== dm) continue;
+    if (rg !== '' && S[i].region !== rg) continue;
     stores.push(S[i]);
   }
   stores.sort(function(a,b) { return a.nm.localeCompare(b.nm); });
