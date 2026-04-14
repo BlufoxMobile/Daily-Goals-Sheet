@@ -139,10 +139,103 @@ function getC() {
 function pf(v) { var n=parseFloat(v); return isNaN(n)?0:n; }
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
 
+    const MY_STORES = ['Bourbonnais','Burbank','Cicero','Dekalb','Elkhart','Evanston','Evergreen Park','Frankfort','Glenview','Greeneville','Hammond','Johnson City','Kildeer','Michigan City','Oak Ridge','Round Lake Beach','Schererville','South Bend','South Knoxville','South Skokie','Tinley Park','Uptown','Valparaiso'];
+    const MY_STORES_LOWER = MY_STORES.map(s => s.toLowerCase().trim());
+    
+    // Auto-load Sales Report on page load
+    window.addEventListener('DOMContentLoaded', function() {
+      const excelUrl = 'https://raw.githubusercontent.com/BlufoxMobile/Daily-Goals-Sheet/main/data/sales.xlsx?t=' + Date.now();
+      fetch(excelUrl)
+        .then(r => r.ok ? r.arrayBuffer() : Promise.reject('Failed to fetch sales.xlsx'))
+        .then(buf => {
+          // Simulate file upload with the fetched buffer
+          const fakeEvent = { target: { result: buf } };
+          processExcelData(fakeEvent);
+        })
+        .catch(err => console.warn('Auto-load failed:', err));
+    });
+    
+    // Extract the parse logic into a reusable function
+    function processExcelData(e) {
+      try {
+        var wb = XLSX.read(e.target.result, {type:'array'});
+        var ws = wb.Sheets[wb.SheetNames[0]];
+        var raw = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+        
+        // Find header row with "rank"
+        var hIdx = -1;
+        for (var r = 0; r < Math.min(raw.length, 30); r++) {
+          for (var c = 0; c < (raw[r]||[]).length; c++) {
+            if (String((raw[r]||[])[c]).toLowerCase().trim() === 'rank') { hIdx = r; break; }
+          }
+          if (hIdx > 0) break;
+        }
+        
+        S = [];
+        for (var i = hIdx + 1; i < raw.length; i++) {
+          var w = raw[i];
+          if (!w || !w[2]) continue;
+          var nm = String(w[2]||'').trim();
+          if (!nm || !w[0] || nm.toLowerCase().indexOf('total') >= 0) continue;
+          
+          // FILTER: Only include stores in MY_STORES
+          if (!MY_STORES_LOWER.includes(nm.toLowerCase().trim())) continue;
+          
+          S.push({
+            nm: nm,
+            region:  String(w[1]||'').trim(),
+            rsd:     String(w[4]||'').trim(),
+            dm:      String(w[5]||'').trim() || 'Unassigned',
+            sm:      String(w[6]||'').trim(),
+            gp:      pf(w[7]),
+            gpTrend: pf(w[11]),
+            gpEst:   pf(w[12]),
+            gpTgt:   pf(w[15]),
+            trafDay: pf(w[30]),
+            fInst:   pf(w[38]),
+            fMob:    pf(w[39]),
+            tablet:  pf(w[64]),
+            watches: pf(w[65]),
+            accN:    pf(w[81])
+          });
+        }
+        
+        if (!S.length) { console.warn('No matching stores found.'); return; }
+        
+        // Populate region/district dropdowns
+        var regions = {}, districts = {};
+        S.forEach(function(s) {
+          if (s.region) regions[s.region] = (regions[s.region]||0) + 1;
+          if (s.dm) districts[s.dm] = (districts[s.dm]||0) + 1;
+        });
+        var rsel = document.getElementById('rsel');
+        if (rsel) {
+          rsel.innerHTML = '<option value="">All Regions</option>';
+          Object.keys(regions).sort().forEach(function(rg) {
+            rsel.innerHTML += '<option value="'+esc(rg)+'">'+rg+' ('+regions[rg]+')</option>';
+          });
+        }
+        var dsel = document.getElementById('dsel');
+        if (dsel) {
+          dsel.innerHTML = '<option value="">All Districts</option>';
+          Object.keys(districts).sort().forEach(function(dm) {
+            dsel.innerHTML += '<option value="'+esc(dm)+'">'+dm+' ('+districts[dm]+')</option>';
+          });
+        }
+        
+        render();
+        var pbtn = document.getElementById('pbtn');
+        if (pbtn) pbtn.style.display = '';
+      } catch (err) {
+        console.error('Parse error:', err);
+      }
+    }
+    
 function load(file) {
   if (!file) return;
   var reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = function(e) { processExcelData(e); return; // Use new filtered parser
+    /* Legacy parser disabled:
     try {
       var wb = XLSX.read(e.target.result, {type:'array'});
       var ws = wb.Sheets[wb.SheetNames[0]];
@@ -219,7 +312,7 @@ function load(file) {
       document.getElementById('pbtn').style.display = '';
       render();
     } catch(err) { alert('Error: ' + err.message); }
-  };
+  */ };
   reader.readAsArrayBuffer(file);
 }
 
