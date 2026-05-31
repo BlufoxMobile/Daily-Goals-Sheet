@@ -1,4 +1,4 @@
-<!DOCTYPE <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -24,9 +24,17 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);marg
 .btn:hover{border-color:#333}
 .btn-t{border-color:var(--teal);color:var(--teal)}
 select,input[type="number"]{padding:.3rem .45rem;border-radius:5px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:.78rem;outline:none}
-select{font-weight:600;min-width:150px}
+select{font-weight:600;min-width:120px;max-width:46vw}
 .cg{display:flex;align-items:center;gap:.25rem}
 .cl{font-size:.66rem;color:var(--dim);font-weight:600}
+
+/* Mobile: tighten the control bars so they don't eat the screen */
+@media (max-width:640px){
+  .bar{gap:.4rem;padding:.4rem .6rem}
+  .bar h1{font-size:.95rem}
+  .strip{gap:.35rem;padding:.25rem .6rem;font-size:.6rem}
+  select{min-width:100px}
+}
 
 /* ── Info strip ── */
 .strip{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;padding:.25rem 1.2rem;border-bottom:1px solid var(--border);flex-shrink:0;font-size:.66rem;font-weight:600}
@@ -40,11 +48,12 @@ select{font-weight:600;min-width:150px}
 .upload:hover .ic{transform:scale(1.1)}
 .upload .ic{font-size:2.2rem;transition:transform .15s}.upload .tt{font-size:.95rem;font-weight:700}.upload .hh{font-size:.65rem;color:var(--dim)}
 
-/* ── Center ── */
-#dash{display:none;flex:1;align-items:center;justify-content:center;padding:.7rem 1.5rem;min-height:0}
+/* ── Center + auto-fit scaler ── */
+#dash{display:none;flex:1;align-items:center;justify-content:center;padding:.5rem;min-height:0;overflow:hidden;position:relative}
+#scaler{transform-origin:center center;will-change:transform}
 
-/* ═══ BOX ═══ */
-.box{border:2px solid var(--border2);border-radius:16px;background:var(--card);overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.6);max-width:1040px;width:100%}
+/* ═══ BOX ═══ (laid out at a comfortable fixed design size, then scaled to fit any screen) */
+.box{border:2px solid var(--border2);border-radius:16px;background:var(--card);overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.6);width:1000px}
 .box-title{padding:.75rem 1.6rem;font-size:1.45rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;background:var(--card2);border-bottom:2px solid var(--border2);display:flex;align-items:center;gap:.6rem}
 .box-title span{color:var(--teal)}
 
@@ -66,6 +75,7 @@ tr.tot td:first-child{color:var(--dim);font-size:1.05rem}
 @media print{
   body{background:#fff!important;color:#111!important;overflow:visible!important;height:auto!important}
   .bar,.strip{display:none!important}#dash{display:flex!important}
+  #scaler{transform:none!important}
   .box{border:1px solid #ccc!important;box-shadow:none!important}
   thead th{background:#f5f5f5!important;color:#333!important;border-color:#ddd!important}
   td{border-color:#eee!important;color:#111!important}
@@ -361,7 +371,7 @@ function render(){
     return;
   }
 
-  var h='<div class="box"><div class="box-title">🎯 <span>Daily Goals</span></div><table><thead><tr>';
+  var h='<div id="scaler"><div class="box"><div class="box-title">🎯 <span>Daily Goals</span></div><table><thead><tr>';
   h+='<th style="color:var(--dim)">Store</th>';
   h+='<th class="h-mob">📱 Mobile</th>';
   h+='<th class="h-rgu">🏠 RGUs</th>';
@@ -385,415 +395,32 @@ function render(){
   }
   h+='<tr class="tot"><td>DISTRICT</td>';
   h+='<td>'+t.mob+'</td><td>'+t.rgu+'</td><td>'+t.wt+'</td><td>$'+kF(t.acc)+'</td><td>$'+kF(t.gp)+'</td>';
-  h+='</tr></tbody></table></div>';
+  h+='</tr></tbody></table></div></div>';
 
   document.getElementById('dash').innerHTML=h;
+  fitToScreen();
 }
 
-function kF(n){
-  if(n>=100000) return (n/1000).toFixed(0)+'k';
-  if(n>=10000)  return (n/1000).toFixed(1)+'k';
-  if(n<0)       return '0';
-  return n.toLocaleString('en-US',{maximumFractionDigits:0});
+/* ── Auto-fit: scale the box to fill whatever screen it's on ──
+   Measures the box at its fixed design size, then scales it so it fits the
+   available area (width AND height). Phones shrink it, TVs blow it up.
+   Caps the upscale so it stays crisp on huge displays. */
+function fitToScreen(){
+  var dash=document.getElementById('dash');
+  var scaler=document.getElementById('scaler');
+  if(!dash || !scaler) return;
+  scaler.style.transform='scale(1)';           // reset to measure natural size
+  var bw=scaler.offsetWidth, bh=scaler.offsetHeight;
+  if(!bw || !bh) return;
+  var availW=dash.clientWidth  - 16;            // small breathing room
+  var availH=dash.clientHeight - 16;
+  var scale=Math.min(availW/bw, availH/bh);
+  scale=Math.min(scale, 3);                     // don't over-blow on giant TVs
+  scale=Math.max(scale, 0.2);                   // floor for tiny screens
+  scaler.style.transform='scale('+scale+')';
 }
-
-/* Auto-pull the latest uploaded report on load, and refresh every 30 min */
-loadFromGitHub();
-setInterval(loadFromGitHub, 1800000);
-</script>
-</body>
-</html>
-
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Targets — Blufox Retail</title>
-<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --bg:#000;--card:#0a0a0a;--card2:#0e0e0e;--border:#1c1c1c;--border2:#282828;
-  --text:#f0f0f0;--dim:#666;--dim2:#444;
-  --teal:#2dd4bf;--amber:#fbbf24;--purple:#a78bfa;--green:#34d399;
-}
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);margin:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
-
-/* ── Top bar ── */
-.bar{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;padding:.5rem 1.2rem;border-bottom:1px solid var(--border);flex-shrink:0}
-.logo{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:.9rem;background:linear-gradient(135deg,var(--teal),var(--amber));box-shadow:0 2px 10px rgba(45,212,191,.2)}
-.bar h1{font-size:1.1rem;font-weight:900;letter-spacing:-.02em}
-.spacer{flex:1}
-.btn{padding:.32rem .7rem;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:.72rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:.2rem}
-.btn:hover{border-color:#333}
-.btn-t{border-color:var(--teal);color:var(--teal)}
-select,input[type="number"]{padding:.3rem .45rem;border-radius:5px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:.78rem;outline:none}
-select{font-weight:600;min-width:150px}
-.cg{display:flex;align-items:center;gap:.25rem}
-.cl{font-size:.66rem;color:var(--dim);font-weight:600}
-
-/* ── Info strip ── */
-.strip{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;padding:.25rem 1.2rem;border-bottom:1px solid var(--border);flex-shrink:0;font-size:.66rem;font-weight:600}
-.strip .l{color:var(--dim)}.strip .v{font-family:'Space Mono',monospace}.strip .a{color:var(--teal)}.strip .b{color:var(--amber)}.strip .sep{color:#222}
-.strip .ti{display:flex;align-items:center;gap:.12rem}
-.strip .ti label{font-size:.56rem;font-weight:700;color:var(--dim)}
-.strip .ti input{width:34px;padding:.1rem .15rem;border-radius:3px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;font-size:.56rem;text-align:center}
-
-/* ── Upload ── */
-.upload{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;cursor:pointer}
-.upload:hover .ic{transform:scale(1.1)}
-.upload .ic{font-size:2.2rem;transition:transform .15s}.upload .tt{font-size:.95rem;font-weight:700}.upload .hh{font-size:.65rem;color:var(--dim)}
-
-/* ── Center ── */
-#dash{display:none;flex:1;align-items:center;justify-content:center;padding:.7rem 1.5rem;min-height:0}
-
-/* ═══ BOX ═══ */
-.box{border:2px solid var(--border2);border-radius:16px;background:var(--card);overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.6);max-width:1040px;width:100%}
-.box-title{padding:.75rem 1.6rem;font-size:1.45rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;background:var(--card2);border-bottom:2px solid var(--border2);display:flex;align-items:center;gap:.6rem}
-.box-title span{color:var(--teal)}
-
-table{border-collapse:collapse;width:100%}
-thead th{padding:.6rem 1rem;font-size:1.05rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;text-align:center;background:var(--card2);border-bottom:2px solid var(--border2);border-right:2px solid var(--border2);white-space:nowrap}
-thead th:first-child{text-align:left;padding-left:1.6rem}
-thead th:last-child{border-right:none}
-.h-mob{color:var(--teal)}.h-rgu{color:var(--purple)}.h-wt{color:#f472b6}.h-acc{color:var(--amber)}.h-gp{color:var(--green)}
-
-td{padding:.6rem 1rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.05);border-right:2px solid var(--border2);font-family:'Space Mono',monospace;font-size:1.7rem;font-weight:700}
-td:first-child{text-align:left;padding-left:1.6rem;font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:800}
-td:last-child{border-right:none}
-tbody tr:hover td{background:rgba(255,255,255,.02)}
-.sm{display:block;font-size:.72rem;color:var(--dim);font-weight:500;margin-top:2px}
-
-tr.tot td{border-top:2px solid var(--border2);background:var(--card2);font-size:1.55rem}
-tr.tot td:first-child{color:var(--dim);font-size:1.05rem}
-
-@media print{
-  body{background:#fff!important;color:#111!important;overflow:visible!important;height:auto!important}
-  .bar,.strip{display:none!important}#dash{display:flex!important}
-  .box{border:1px solid #ccc!important;box-shadow:none!important}
-  thead th{background:#f5f5f5!important;color:#333!important;border-color:#ddd!important}
-  td{border-color:#eee!important;color:#111!important}
-}
-</style>
-</head>
-<body>
-
-<div class="bar">
-  <div class="logo">🎯</div>
-  <h1>Daily Targets</h1>
-  <div class="spacer"></div>
-  <div class="cg"><span class="cl">Region:</span><select id="rsel" onchange="render()"><option value="ALL">All Regions</option></select></div>
-  <div class="cg"><span class="cl">District:</span><select id="dsel" onchange="render()"></select></div>
-  <div class="cg"><span class="cl">Fiscal:</span><input type="number" id="fov" min="1" max="31" style="width:32px" onchange="render()"></div>
-  <div class="cg"><span class="cl">Cal:</span><input type="number" id="cov" min="1" max="31" style="width:32px" onchange="render()"></div>
-  <label class="btn btn-t">📂 Upload<input type="file" id="fi" accept=".xlsx,.xls" style="display:none" onchange="load(this.files[0])"></label>
-  <button class="btn" onclick="window.print()" id="pbtn" style="display:none">🖨️</button>
-</div>
-
-<div class="strip">
-  <span class="l">📅 Cal</span><span class="v" id="cv"></span><span class="a" id="cr"></span>
-  <span class="sep">|</span>
-  <span class="l">⚡ Fiscal</span><span class="v" id="fv"></span><span class="b" id="fr"></span>
-  <span class="sep" style="margin-left:auto">|</span><span class="l">⚙️</span>
-  <div class="ti"><label>MCR≤</label><input value="7" data-k="mcr" onchange="TH[this.dataset.k]=+this.value||0;render()">%</div>
-  <div class="ti"><label>FCR≥</label><input value="10" data-k="fcr" onchange="TH[this.dataset.k]=+this.value||0;render()">%</div>
-  <div class="ti"><label>W/T≥</label><input value="2" step="0.1" data-k="wt" onchange="TH[this.dataset.k]=+this.value||0;render()">%</div>
-  <div class="ti"><label>Acc≥$</label><input value="30" data-k="acc" onchange="TH[this.dataset.k]=+this.value||0;render()"></div>
-  <div class="ti"><label>GP boost<$</label><input value="40000" step="1000" data-k="gpFloor" style="width:54px" onchange="TH[this.dataset.k]=+this.value||0;render()"></div>
-</div>
-
-<div class="upload" id="uzone" ondragover="event.preventDefault()" ondrop="event.preventDefault();load(event.dataTransfer.files[0])" onclick="document.getElementById('fi').click()">
-  <div class="ic">📊</div>
-  <div class="tt">Drop your sales report here</div>
-  <div class="hh">.xlsx Blufox / Spectrum weekly report</div>
-</div>
-
-<div id="dash"></div>
-
-<script>
-/* ══════════════════════════════════════════════════════════
-   DAILY TARGETS — Blufox Retail
-   Thresholds (editable in the UI):
-     mcr 7%  · fcr 10%  · wt 2%  · acc $30/box  · GP boost floor $40k, +$10k
-   ══════════════════════════════════════════════════════════ */
-var S = [];
-var now = new Date();
-var TH = { mcr:7, fcr:10, wt:2, acc:30, gpFloor:40000, gpBoost:10000 };
-
-/* ── Periods ── */
-function fisBounds(){          // Fiscal month runs 22nd → 21st
-  var y=now.getFullYear(), m=now.getMonth(), d=now.getDate();
-  if(d>=22) return {s:new Date(y,m,22), e:new Date(y,m+1,21)};
-  return {s:new Date(y,m-1,22), e:new Date(y,m,21)};
-}
-function getF(){
-  var ov=parseInt(document.getElementById('fov').value)||0;
-  var b=fisBounds(), tot=Math.round((b.e-b.s)/864e5)+1;
-  var el=ov>0?ov:Math.round((now-b.s)/864e5)+1;
-  return {el:el, tot:tot, rem:Math.max(1,tot-el)};
-}
-function getC(){
-  var ov=parseInt(document.getElementById('cov').value)||0;
-  var el=ov>0?ov:now.getDate();
-  var tot=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
-  return {el:el, tot:tot, rem:Math.max(1,tot-el)};
-}
-function pf(v){ var n=parseFloat(v); return isNaN(n)?0:n; }
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
-
-/* ── Data source: the same file the upload page writes to ──
-   When this page is hosted inside the Daily-Sales-Report repo, the data sits
-   right next to it at data/Sales Report.xlsx — a same-origin request (most
-   reliable). If that 404s (e.g. hosted elsewhere) we fall back to the absolute
-   raw GitHub URL, then finally to manual upload. */
-var DATA_URLS = [
-  'data/Sales%20Report.xlsx',                                                              // same-origin (deployed in repo)
-  'https://raw.githubusercontent.com/BlufoxMobile/Daily-Sales-Report/main/data/Sales%20Report.xlsx' // cross-origin fallback
-];
-
-/* ── Auto-load on page open ── */
-function loadFromGitHub(){
-  var status=document.getElementById('uzone');
-  if(status){
-    status.querySelector('.tt').textContent='Loading latest report…';
-    status.querySelector('.hh').textContent='Pulling from the Blufox dashboards';
-  }
-  tryFetch(0);
-}
-
-function tryFetch(i){
-  if(i >= DATA_URLS.length){
-    // All sources failed — show manual upload
-    var status=document.getElementById('uzone');
-    if(status){
-      status.querySelector('.tt').textContent='Drop your sales report here';
-      status.querySelector('.hh').textContent='Auto-load unavailable here — upload manually (.xlsx)';
-    }
-    return;
-  }
-  fetch(DATA_URLS[i] + '?t=' + Date.now())
-    .then(function(resp){
-      if(!resp.ok) throw new Error('HTTP '+resp.status);
-      return resp.arrayBuffer();
-    })
-    .then(function(buf){
-      var wb=XLSX.read(buf,{type:'array'});
-      parseWorkbook(wb);
-    })
-    .catch(function(err){
-      console.warn('Source '+(i+1)+' failed:', err.message);
-      tryFetch(i+1);   // try the next source
-    });
-}
-
-/* ── Manual file upload (fallback) ── */
-function load(file){
-  if(!file) return;
-  var reader=new FileReader();
-  reader.onload=function(e){
-    try{
-      var wb=XLSX.read(e.target.result,{type:'array'});
-      parseWorkbook(wb);
-    }catch(err){ alert('Error reading file: '+err.message); console.error(err); }
-  };
-  reader.readAsArrayBuffer(file);
-}
-
-/* ── Parse a workbook into store rows + populate UI ── */
-function parseWorkbook(wb){
-  var ws=wb.Sheets[wb.SheetNames[0]];
-  var raw=XLSX.utils.sheet_to_json(ws,{header:1, defval:''});
-
-  // Find header row (the one with "Rank" in col A)
-  var hIdx=0;
-  for(var r=0;r<20;r++){
-    for(var c=0;c<10;c++){
-      if(String((raw[r]||[])[c]).toLowerCase().trim()==='rank'){ hIdx=r; break; }
-    }
-    if(hIdx>0) break;
-  }
-
-  S=[];
-  for(var r=hIdx+1;r<raw.length;r++){
-    var w=raw[r];
-    if(!w || !w[2]) continue;
-    var nm=String(w[2]).trim();
-    if(!nm || !w[0] || nm.toLowerCase().indexOf('total')>=0) continue;
-    S.push({
-      nm:      nm,
-      region:  String(w[1]||'').trim(),
-      rsd:     String(w[4]||'').trim(),
-      dm:      String(w[5]||'').trim() || 'Unassigned',
-      sm:      String(w[6]||'').trim(),
-      gpTrend: pf(w[11]),   // L  GP $ Trend
-      gpEst:   pf(w[12]),   // M  GP $ Est Net Trend
-      gpTgt:   pf(w[15]),   // P  Net Target GP $
-      trafDay: pf(w[30]),   // AE Shopper Trak Daily Avg
-      fInst:   pf(w[38]),   // AM Fiscal Install (all RGUs)
-      fMob:    pf(w[39]),   // AN Mobile Fiscal Install
-      tablet:  pf(w[64]),   // BM Tablet MTD
-      watches: pf(w[65]),   // BN Watches MTD
-      accN:    pf(w[81])    // CD Net Profit Accessory
-    });
-  }
-  if(!S.length){ alert('No store data found. Check the file format.'); return; }
-
-  // Region dropdown
-  var rsel=document.getElementById('rsel');
-  rsel.innerHTML='<option value="ALL">All Regions</option>';
-  var regs={};
-  for(var i=0;i<S.length;i++){ var rg=S[i].region; if(rg) regs[rg]=(regs[rg]||0)+1; }
-  Object.keys(regs).sort().forEach(function(rg){
-    rsel.innerHTML+='<option value="'+esc(rg)+'">'+rg+' ('+regs[rg]+')</option>';
-  });
-
-  // District dropdown — Jeff's DMs starred at top
-  var dsel=document.getElementById('dsel');
-  dsel.innerHTML='';
-  var jD={}, oD={};
-  for(var i=0;i<S.length;i++){
-    var s=S[i];
-    if(s.rsd.toLowerCase().indexOf('bilbrey')>=0) jD[s.dm]=(jD[s.dm]||0)+1;
-    else oD[s.dm]=(oD[s.dm]||0)+1;
-  }
-  Object.keys(jD).sort().forEach(function(d){
-    dsel.innerHTML+='<option value="'+esc(d)+'">★ '+d+' ('+jD[d]+')</option>';
-  });
-  var oK=Object.keys(oD).sort();
-  if(oK.length){
-    dsel.innerHTML+='<option disabled>──────────</option>';
-    oK.forEach(function(d){ dsel.innerHTML+='<option value="'+esc(d)+'">'+d+' ('+oD[d]+')</option>'; });
-  }
-
-  document.getElementById('fov').value=getF().el;
-  document.getElementById('cov').value=getC().el;
-  document.getElementById('uzone').style.display='none';
-  document.getElementById('dash').style.display='flex';
-  document.getElementById('pbtn').style.display='';
-  render();
-}
-
-/* ══════════════════════════════════════════════════════════
-   GOAL MATH  (all goals always ≥ 1, always rounded UP)
-
-   Traffic projection = Shopper Trak Daily Avg × days in that period.
-
-   1. MOBILE (Fiscal, MCR ≤ 7%)
-      target = 7% × projected fiscal traffic
-      behind → ceil((target − mobile installs) / fiscal days left)
-      on track → ceil(target / fiscal total days)  [maintain pace]
-      Display offset: if mobile goal > 10, subtract watch/tablet goal
-      (watches & tablets count toward MCR, keeps the number from overwhelming staff)
-
-   2. RGUs (Fiscal, FCR ≥ 10%)
-      target = 10% × projected fiscal traffic
-      behind → ceil((target − fiscal installs) / fiscal days left)
-      on track → ceil(target / fiscal total days)
-
-   3. WATCH/TABLET (Calendar, 2% of monthly traffic)
-      target = 2% × projected calendar traffic
-      daily  = ceil(target / calendar total days)  [steady figure]
-
-   4. ACCESSORIES (Fiscal, $30 net per box × mobile target)
-      target = $30 × mobile target
-      behind → ceil((target − acc net profit) / fiscal days left)
-      on track → ceil(target / fiscal total days)
-
-   5. GP (Calendar)
-      base = Net Target GP (col P); if base < $40k, add $10k (boost struggling stores)
-      goal = max(boosted base, GP Trend col L)   [let strong stores chase trend]
-      daily = ceil(goal / calendar total days)
-   ══════════════════════════════════════════════════════════ */
-function calc(s){
-  var f=getF(), c=getC();
-  var projF = Math.ceil((s.trafDay||1) * f.tot);
-  var projC = Math.ceil((s.trafDay||1) * c.tot);
-
-  // 1. MOBILE
-  var mobTgt  = Math.floor((TH.mcr/100) * projF);
-  var mobNeed = Math.max(0, mobTgt - s.fMob);
-  var mobD    = mobNeed===0 ? Math.max(1, Math.ceil(mobTgt/f.tot))
-                            : Math.ceil(mobNeed / f.rem);
-
-  // 2. RGU
-  var rguTgt  = Math.ceil((TH.fcr/100) * projF);
-  var rguNeed = Math.max(0, rguTgt - s.fInst);
-  var rguD    = rguNeed===0 ? Math.max(1, Math.ceil(rguTgt/f.tot))
-                            : Math.ceil(rguNeed / f.rem);
-
-  // 3. WATCH/TABLET
-  var wtTgt = Math.ceil((TH.wt/100) * projC);
-  var wtD   = Math.max(1, Math.ceil(wtTgt / c.tot));
-
-  // 4. ACCESSORIES
-  var accTgt  = Math.round(TH.acc * mobTgt);
-  var accNeed = Math.max(0, accTgt - Math.round(s.accN));
-  var accD    = accNeed===0 ? Math.max(1, Math.ceil(accTgt/f.tot))
-                            : Math.ceil(accNeed / f.rem);
-
-  // 5. GP
-  var gpBase = s.gpTgt < TH.gpFloor ? s.gpTgt + TH.gpBoost : s.gpTgt;
-  var gpGoal = Math.max(gpBase, s.gpTrend);
-  var gpD    = Math.max(1, Math.ceil(gpGoal / c.tot));
-
-  // Mobile display offset (watches/tablets count toward MCR)
-  var mobDisp = mobD > 10 ? Math.max(1, mobD - wtD) : mobD;
-
-  return { mob:mobDisp, rgu:rguD, wt:wtD, acc:accD, gp:gpD };
-}
-
-/* ── Render ── */
-function render(){
-  var f=getF(), c=getC();
-  document.getElementById('cv').textContent=c.el+'/'+c.tot;
-  document.getElementById('cr').textContent=c.rem+'d left';
-  document.getElementById('fv').textContent=f.el+'/'+f.tot;
-  document.getElementById('fr').textContent=f.rem+'d left';
-
-  var dm=document.getElementById('dsel').value;
-  var rg=document.getElementById('rsel').value;
-  var stores=[];
-  for(var i=0;i<S.length;i++){
-    if(S[i].dm!==dm) continue;
-    if(rg!=='ALL' && S[i].region!==rg) continue;
-    stores.push(S[i]);
-  }
-  stores.sort(function(a,b){ return a.nm.localeCompare(b.nm); });
-
-  if(!stores.length){
-    document.getElementById('dash').innerHTML='<div style="color:var(--dim)">No stores match this filter.</div>';
-    return;
-  }
-
-  var h='<div class="box"><div class="box-title">🎯 <span>Daily Goals</span></div><table><thead><tr>';
-  h+='<th style="color:var(--dim)">Store</th>';
-  h+='<th class="h-mob">📱 Mobile</th>';
-  h+='<th class="h-rgu">🏠 RGUs</th>';
-  h+='<th class="h-wt">⌚ Watch / Tab</th>';
-  h+='<th class="h-acc">🎧 Acc $</th>';
-  h+='<th class="h-gp">💰 GP $</th>';
-  h+='</tr></thead><tbody>';
-
-  var t={mob:0,rgu:0,wt:0,acc:0,gp:0};
-  for(var i=0;i<stores.length;i++){
-    var g=calc(stores[i]);
-    t.mob+=g.mob; t.rgu+=g.rgu; t.wt+=g.wt; t.acc+=g.acc; t.gp+=g.gp;
-    h+='<tr>';
-    h+='<td>'+esc(stores[i].nm)+'<span class="sm">'+esc(stores[i].sm)+'</span></td>';
-    h+='<td>'+g.mob+'</td>';
-    h+='<td>'+g.rgu+'</td>';
-    h+='<td>'+g.wt+'</td>';
-    h+='<td>$'+kF(g.acc)+'</td>';
-    h+='<td>$'+kF(g.gp)+'</td>';
-    h+='</tr>';
-  }
-  h+='<tr class="tot"><td>DISTRICT</td>';
-  h+='<td>'+t.mob+'</td><td>'+t.rgu+'</td><td>'+t.wt+'</td><td>$'+kF(t.acc)+'</td><td>$'+kF(t.gp)+'</td>';
-  h+='</tr></tbody></table></div>';
-
-  document.getElementById('dash').innerHTML=h;
-}
+window.addEventListener('resize', fitToScreen);
+window.addEventListener('orientationchange', function(){ setTimeout(fitToScreen, 200); });
 
 function kF(n){
   if(n>=100000) return (n/1000).toFixed(0)+'k';
