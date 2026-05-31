@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -8,82 +8,67 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#000;--card:#0a0a0a;--card2:#0e0e0e;--border:#1c1c1c;--border2:#282828;--text:#f0f0f0;--dim:#555;--teal:#2dd4bf;--amber:#fbbf24;--green:#34d399;--red:#fb7185}
+:root{
+  --bg:#000;--card:#0a0a0a;--card2:#0e0e0e;--border:#1c1c1c;--border2:#282828;
+  --text:#f0f0f0;--dim:#666;--dim2:#444;
+  --teal:#2dd4bf;--amber:#fbbf24;--purple:#a78bfa;--green:#34d399;
+}
 body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);margin:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
-.bar{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;padding:.5rem 1.2rem;border-bottom:1px solid var(--border);flex-shrink:0}
+/* ── Top bar ── */
+.bar{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;padding:.5rem 1.2rem;border-bottom:1px solid var(--border);flex-shrink:0}
 .logo{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:.9rem;background:linear-gradient(135deg,var(--teal),var(--amber));box-shadow:0 2px 10px rgba(45,212,191,.2)}
 .bar h1{font-size:1.1rem;font-weight:900;letter-spacing:-.02em}
 .spacer{flex:1}
-.btn{padding:.3rem .65rem;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:.72rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:.2rem}
+.btn{padding:.32rem .7rem;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:.72rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:.2rem}
 .btn:hover{border-color:#333}
 .btn-t{border-color:var(--teal);color:var(--teal)}
-select,input[type="number"]{padding:.3rem .45rem;border-radius:5px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:.75rem;outline:none}
-select{font-size:.85rem;font-weight:600;padding:.3rem .5rem;min-width:180px}
-.cg{display:flex;align-items:center;gap:.2rem}
-.cl{font-size:.65rem;color:var(--dim);font-weight:600}
+select,input[type="number"]{padding:.3rem .45rem;border-radius:5px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:.78rem;outline:none}
+select{font-weight:600;min-width:150px}
+.cg{display:flex;align-items:center;gap:.25rem}
+.cl{font-size:.66rem;color:var(--dim);font-weight:600}
 
-.strip{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;padding:.25rem 1.2rem;border-bottom:1px solid var(--border);flex-shrink:0;font-size:.65rem;font-weight:600}
+/* ── Info strip ── */
+.strip{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;padding:.25rem 1.2rem;border-bottom:1px solid var(--border);flex-shrink:0;font-size:.66rem;font-weight:600}
 .strip .l{color:var(--dim)}.strip .v{font-family:'Space Mono',monospace}.strip .a{color:var(--teal)}.strip .b{color:var(--amber)}.strip .sep{color:#222}
+.strip .ti{display:flex;align-items:center;gap:.12rem}
+.strip .ti label{font-size:.56rem;font-weight:700;color:var(--dim)}
+.strip .ti input{width:34px;padding:.1rem .15rem;border-radius:3px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;font-size:.56rem;text-align:center}
 
-.upload{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;cursor:pointer}
+/* ── Upload ── */
+.upload{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;cursor:pointer}
 .upload:hover .ic{transform:scale(1.1)}
-.upload .ic{font-size:2rem;transition:transform .15s}.upload .tt{font-size:.85rem;font-weight:700}.upload .hh{font-size:.6rem;color:var(--dim)}
+.upload .ic{font-size:2.2rem;transition:transform .15s}.upload .tt{font-size:.95rem;font-weight:700}.upload .hh{font-size:.65rem;color:var(--dim)}
 
-#dash{display:none;flex:1;align-items:center;justify-content:center;padding:1rem 3rem;min-height:0}
+/* ── Center ── */
+#dash{display:none;flex:1;align-items:center;justify-content:center;padding:.7rem 1.5rem;min-height:0}
 
-.box{
-  border:2px solid var(--border2);border-radius:16px;
-  background:var(--card);overflow:hidden;
-  box-shadow:0 8px 40px rgba(0,0,0,.6);
-  max-width:960px;width:100%;
-}
-.box-title{
-  padding:.65rem 1.5rem;font-size:1.4rem;font-weight:900;
-  text-transform:uppercase;letter-spacing:.06em;
-  background:var(--card2);border-bottom:2px solid var(--border2);
-  display:flex;align-items:center;gap:.6rem;
-}
+/* ═══ BOX ═══ */
+.box{border:2px solid var(--border2);border-radius:16px;background:var(--card);overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.6);max-width:1040px;width:100%}
+.box-title{padding:.75rem 1.6rem;font-size:1.45rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;background:var(--card2);border-bottom:2px solid var(--border2);display:flex;align-items:center;gap:.6rem}
 .box-title span{color:var(--teal)}
 
 table{border-collapse:collapse;width:100%}
-
-thead th{
-  padding:.55rem 1rem;font-size:1.05rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;
-  text-align:center;background:var(--card2);border-bottom:2px solid var(--border2);
-  border-right:2px solid var(--border2);white-space:nowrap;
-}
-thead th:first-child{text-align:left;padding-left:1.5rem}
+thead th{padding:.6rem 1rem;font-size:1.05rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;text-align:center;background:var(--card2);border-bottom:2px solid var(--border2);border-right:2px solid var(--border2);white-space:nowrap}
+thead th:first-child{text-align:left;padding-left:1.6rem}
 thead th:last-child{border-right:none}
-.h-mob{color:var(--teal)}
-.h-rgu{color:#a78bfa}
-.h-wt{color:#a78bfa}
-.h-acc{color:var(--amber)}
-.h-gp{color:var(--green)}
+.h-mob{color:var(--teal)}.h-rgu{color:var(--purple)}.h-wt{color:#f472b6}.h-acc{color:var(--amber)}.h-gp{color:var(--green)}
 
-td{
-  padding:.55rem 1rem;text-align:center;
-  border-bottom:1px solid rgba(255,255,255,.05);
-  border-right:2px solid var(--border2);
-  font-family:'Space Mono',monospace;font-size:1.65rem;font-weight:700;
-}
-td:first-child{text-align:left;padding-left:1.5rem;font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:800}
+td{padding:.6rem 1rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.05);border-right:2px solid var(--border2);font-family:'Space Mono',monospace;font-size:1.7rem;font-weight:700}
+td:first-child{text-align:left;padding-left:1.6rem;font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:800}
 td:last-child{border-right:none}
 tbody tr:hover td{background:rgba(255,255,255,.02)}
-
-.sm{display:block;font-size:.7rem;color:var(--dim);font-weight:500;margin-top:2px}
+.sm{display:block;font-size:.72rem;color:var(--dim);font-weight:500;margin-top:2px}
 
 tr.tot td{border-top:2px solid var(--border2);background:var(--card2);font-size:1.55rem}
-tr.tot td:first-child{color:var(--dim);font-size:1rem}
+tr.tot td:first-child{color:var(--dim);font-size:1.05rem}
 
 @media print{
   body{background:#fff!important;color:#111!important;overflow:visible!important;height:auto!important}
-  .bar,.strip{display:none!important}
-  #dash{display:flex!important}
+  .bar,.strip{display:none!important}#dash{display:flex!important}
   .box{border:1px solid #ccc!important;box-shadow:none!important}
   thead th{background:#f5f5f5!important;color:#333!important;border-color:#ddd!important}
   td{border-color:#eee!important;color:#111!important}
-  .ok{color:#16a34a!important}.dg{background:#16a34a!important}.dr{background:#dc2626!important}
 }
 </style>
 </head>
@@ -93,7 +78,7 @@ tr.tot td:first-child{color:var(--dim);font-size:1rem}
   <div class="logo">🎯</div>
   <h1>Daily Targets</h1>
   <div class="spacer"></div>
-  <div class="cg"><span class="cl">Region:</span><select id="rsel" onchange="render()"><option value="ALL">All</option></select></div>
+  <div class="cg"><span class="cl">Region:</span><select id="rsel" onchange="render()"><option value="ALL">All Regions</option></select></div>
   <div class="cg"><span class="cl">District:</span><select id="dsel" onchange="render()"></select></div>
   <div class="cg"><span class="cl">Fiscal:</span><input type="number" id="fov" min="1" max="31" style="width:32px" onchange="render()"></div>
   <div class="cg"><span class="cl">Cal:</span><input type="number" id="cov" min="1" max="31" style="width:32px" onchange="render()"></div>
@@ -105,359 +90,721 @@ tr.tot td:first-child{color:var(--dim);font-size:1rem}
   <span class="l">📅 Cal</span><span class="v" id="cv"></span><span class="a" id="cr"></span>
   <span class="sep">|</span>
   <span class="l">⚡ Fiscal</span><span class="v" id="fv"></span><span class="b" id="fr"></span>
+  <span class="sep" style="margin-left:auto">|</span><span class="l">⚙️</span>
+  <div class="ti"><label>MCR≤</label><input value="7" data-k="mcr" onchange="TH[this.dataset.k]=+this.value||0;render()">%</div>
+  <div class="ti"><label>FCR≥</label><input value="10" data-k="fcr" onchange="TH[this.dataset.k]=+this.value||0;render()">%</div>
+  <div class="ti"><label>W/T≥</label><input value="2" step="0.1" data-k="wt" onchange="TH[this.dataset.k]=+this.value||0;render()">%</div>
+  <div class="ti"><label>Acc≥$</label><input value="30" data-k="acc" onchange="TH[this.dataset.k]=+this.value||0;render()"></div>
+  <div class="ti"><label>GP boost<$</label><input value="40000" step="1000" data-k="gpFloor" style="width:54px" onchange="TH[this.dataset.k]=+this.value||0;render()"></div>
 </div>
 
-<div class="upload" id="uzone" ondragover="event.preventDefault()" ondrop="event.preventDefault();load(event.dataTransfer.files[0])" onclick="document.getElementById('fi').click()" style="display:none">
+<div class="upload" id="uzone" ondragover="event.preventDefault()" ondrop="event.preventDefault();load(event.dataTransfer.files[0])" onclick="document.getElementById('fi').click()">
   <div class="ic">📊</div>
   <div class="tt">Drop your sales report here</div>
-  <div class="hh">.xlsx Blufox report</div>
+  <div class="hh">.xlsx Blufox / Spectrum weekly report</div>
 </div>
 
 <div id="dash"></div>
 
 <script>
+/* ══════════════════════════════════════════════════════════
+   DAILY TARGETS — Blufox Retail
+   Thresholds (editable in the UI):
+     mcr 7%  · fcr 10%  · wt 2%  · acc $30/box  · GP boost floor $40k, +$10k
+   ══════════════════════════════════════════════════════════ */
 var S = [];
 var now = new Date();
+var TH = { mcr:7, fcr:10, wt:2, acc:30, gpFloor:40000, gpBoost:10000 };
 
-function fisBounds() {
+/* ── Periods ── */
+function fisBounds(){          // Fiscal month runs 22nd → 21st
   var y=now.getFullYear(), m=now.getMonth(), d=now.getDate();
-  if (d >= 22) return { s:new Date(y,m,22), e:new Date(y,m+1,21) };
-  return { s:new Date(y,m-1,22), e:new Date(y,m,21) };
+  if(d>=22) return {s:new Date(y,m,22), e:new Date(y,m+1,21)};
+  return {s:new Date(y,m-1,22), e:new Date(y,m,21)};
 }
-function getF() {
+function getF(){
   var ov=parseInt(document.getElementById('fov').value)||0;
   var b=fisBounds(), tot=Math.round((b.e-b.s)/864e5)+1;
   var el=ov>0?ov:Math.round((now-b.s)/864e5)+1;
-  return { el:el, tot:tot, rem:Math.max(1,tot-el) };
+  return {el:el, tot:tot, rem:Math.max(1,tot-el)};
 }
-function getC() {
+function getC(){
   var ov=parseInt(document.getElementById('cov').value)||0;
   var el=ov>0?ov:now.getDate();
   var tot=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
-  return { el:el, tot:tot, rem:Math.max(1,tot-el) };
+  return {el:el, tot:tot, rem:Math.max(1,tot-el)};
 }
-function pf(v) { var n=parseFloat(v); return isNaN(n)?0:n; }
-function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+function pf(v){ var n=parseFloat(v); return isNaN(n)?0:n; }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
 
-    const MY_STORES = ['Bourbonnais','Burbank','Calumet City','Cicero','Dekalb','Elkhart','Evanston','Evergreen Park','Frankfort','Glenview','Greeneville','Hammond','Johnson City','Kildeer','Michigan City','Oak Ridge','Round Lake Beach','Schererville','South Bend','South Knoxville','South Skokie','Tinley Park','Uptown','Valparaiso'];
-    const MY_STORES_LOWER = MY_STORES.map(s => s.toLowerCase().trim());
-    
-    // Auto-load Sales Report on page load
-    window.addEventListener('DOMContentLoaded', function() {
-      const excelUrl = 'https://raw.githubusercontent.com/BlufoxMobile/Daily-Goals-Sheet/main/data/sales.xlsx?t=' + Date.now();
-      fetch(excelUrl)
-        .then(r => r.ok ? r.arrayBuffer() : Promise.reject('Failed to fetch sales.xlsx'))
-        .then(buf => {
-          // Simulate file upload with the fetched buffer
-          const fakeEvent = { target: { result: buf } };
-          processExcelData(fakeEvent);
-        })
-        .catch(err => console.warn('Auto-load failed:', err));
-    });
-    
-    // Extract the parse logic into a reusable function
-    function processExcelData(e) {
-      try {
-        var wb = XLSX.read(e.target.result, {type:'array'});
-        var ws = wb.Sheets[wb.SheetNames[0]];
-        var raw = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
-        
-        // Find header row with "rank"
-        var hIdx = -1;
-        for (var r = 0; r < Math.min(raw.length, 30); r++) {
-          for (var c = 0; c < (raw[r]||[]).length; c++) {
-            if (String((raw[r]||[])[c]).toLowerCase().trim() === 'rank') { hIdx = r; break; }
-          }
-          if (hIdx > 0) break;
-        }
-        
-        S = [];
-        for (var i = hIdx + 1; i < raw.length; i++) {
-          var w = raw[i];
-          if (!w || !w[2]) continue;
-          var nm = String(w[2]||'').trim();
-          if (!nm || !w[0] || nm.toLowerCase().indexOf('total') >= 0) continue;
-          
-          // FILTER: Only include stores in MY_STORES
-          if (!MY_STORES_LOWER.includes(nm.toLowerCase().trim())) continue;
-          
-          S.push({
-            nm: nm,
-            region:  String(w[1]||'').trim(),
-            rsd:     String(w[4]||'').trim(),
-            dm:      String(w[5]||'').trim() || 'Unassigned',
-            sm:      String(w[6]||'').trim(),
-            gp:      pf(w[7]),
-            gpTrend: pf(w[11]),
-            gpEst:   pf(w[12]),
-            gpTgt:   pf(w[15]),
-            trafDay: pf(w[30]),
-            fInst:   pf(w[38]),
-            fMob:    pf(w[39]),
-            tablet:  pf(w[64]),
-            watches: pf(w[65]),
-            accN:    pf(w[81])
-          });
-        }
-        
-        if (!S.length) { console.warn('No matching stores found.'); return; }
-        
-        // Populate region/district dropdowns
-        var regions = {}, districts = {};
-        S.forEach(function(s) {
-          if (s.region) regions[s.region] = (regions[s.region]||0) + 1;
-          if (s.dm) districts[s.dm] = (districts[s.dm]||0) + 1;
-        });
-        var rsel = document.getElementById('rsel');
-        if (rsel) {
-          rsel.innerHTML = '<option value="">All Regions</option>';
-          Object.keys(regions).sort().forEach(function(rg) {
-            rsel.innerHTML += '<option value="'+esc(rg)+'">'+rg+' ('+regions[rg]+')</option>';
-          });
-        }
-        var dsel = document.getElementById('dsel');
-        if (dsel) {
-          dsel.innerHTML = '<option value="">All Districts</option>';
-          Object.keys(districts).sort().forEach(function(dm) {
-            dsel.innerHTML += '<option value="'+esc(dm)+'">'+dm+' ('+districts[dm]+')</option>';
-          });
-        }
-        
-        document.getElementById('dash').style.display = 'block';
-        render();
-        var pbtn = document.getElementById('pbtn');
-        if (pbtn) pbtn.style.display = '';
-      } catch (err) {
-        console.error('Parse error:', err);
-      }
+/* ── Data source: the same file the upload page writes to ──
+   When this page is hosted inside the Daily-Sales-Report repo, the data sits
+   right next to it at data/Sales Report.xlsx — a same-origin request (most
+   reliable). If that 404s (e.g. hosted elsewhere) we fall back to the absolute
+   raw GitHub URL, then finally to manual upload. */
+var DATA_URLS = [
+  'data/Sales%20Report.xlsx',                                                              // same-origin (deployed in repo)
+  'https://raw.githubusercontent.com/BlufoxMobile/Daily-Sales-Report/main/data/Sales%20Report.xlsx' // cross-origin fallback
+];
+
+/* ── Auto-load on page open ── */
+function loadFromGitHub(){
+  var status=document.getElementById('uzone');
+  if(status){
+    status.querySelector('.tt').textContent='Loading latest report…';
+    status.querySelector('.hh').textContent='Pulling from the Blufox dashboards';
+  }
+  tryFetch(0);
+}
+
+function tryFetch(i){
+  if(i >= DATA_URLS.length){
+    // All sources failed — show manual upload
+    var status=document.getElementById('uzone');
+    if(status){
+      status.querySelector('.tt').textContent='Drop your sales report here';
+      status.querySelector('.hh').textContent='Auto-load unavailable here — upload manually (.xlsx)';
     }
-    
-function load(file) {
-  if (!file) return;
-  var reader = new FileReader();
-  reader.onload = function(e) { processExcelData(e); return; // Use new filtered parser
-    /* Legacy parser disabled:
-    try {
-      var wb = XLSX.read(e.target.result, {type:'array'});
-      var ws = wb.Sheets[wb.SheetNames[0]];
-      var raw = XLSX.utils.sheet_to_json(ws, {header:1, defval:''});
+    return;
+  }
+  fetch(DATA_URLS[i] + '?t=' + Date.now())
+    .then(function(resp){
+      if(!resp.ok) throw new Error('HTTP '+resp.status);
+      return resp.arrayBuffer();
+    })
+    .then(function(buf){
+      var wb=XLSX.read(buf,{type:'array'});
+      parseWorkbook(wb);
+    })
+    .catch(function(err){
+      console.warn('Source '+(i+1)+' failed:', err.message);
+      tryFetch(i+1);   // try the next source
+    });
+}
 
-      var hIdx = 0;
-      for (var r=0; r<20; r++) {
-        for (var c=0; c<10; c++) {
-          if (String((raw[r]||[])[c]).toLowerCase().trim() === 'rank') { hIdx=r; break; }
-        }
-        if (hIdx > 0) break;
-      }
-
-      S = [];
-      for (var r=hIdx+1; r<raw.length; r++) {
-        var w = raw[r];
-        if (!w || !w[2]) continue;
-        var nm = String(w[2]).trim();
-        if (!nm || !w[0] || nm.toLowerCase().indexOf('total') >= 0) continue;
-        S.push({
-          nm:nm,
-          region:  String(w[1]||'').trim(),
-          rsd:     String(w[4]||'').trim(),
-          dm:      String(w[5]||'').trim() || 'Unassigned',
-          sm:      String(w[6]||'').trim(),
-          gp:      pf(w[7]),     // [7]  GP $ (col H)
-          gpTrend: pf(w[11]),    // [11] GP $ Trend (col L)
-          gpEst:   pf(w[12]),    // [12] GP $ Est Net Trend (col M)
-          gpTgt:   pf(w[15]),    // [15] Net Target GP $ (col P)
-          trafDay: pf(w[30]),    // Shopper Trak Daily Avg
-          fInst:   pf(w[38]),    // Fiscal Install (col AM) — for RGU/FCR
-          fMob:    pf(w[39]),    // Mobile Fiscal Install (col AN)
-          tablet:  pf(w[64]),    // Tablet MTD (col BM)
-          watches: pf(w[65]),    // Watches MTD (col BN)
-          accN:    pf(w[81])     // Net Profit Accessory (col CD)
-        });
-      }
-
-      if (!S.length) { alert('No store data found.'); return; }
-
-      // Populate region dropdown
-      var rsel = document.getElementById('rsel');
-      rsel.innerHTML = '<option value="ALL">All Regions</option>';
-      var regions = {};
-      for (var i=0; i<S.length; i++) { var rg = S[i].region; if (rg) regions[rg] = (regions[rg]||0)+1; }
-      Object.keys(regions).sort().forEach(function(rg) {
-        rsel.innerHTML += '<option value="'+esc(rg)+'">'+rg+' ('+regions[rg]+')</option>';
-      });
-
-      // Populate district dropdown
-      var sel = document.getElementById('dsel');
-      sel.innerHTML = '';
-      var jD = {}, oD = {};
-      for (var i=0; i<S.length; i++) {
-        var s = S[i];
-        if (s.rsd.toLowerCase().indexOf('bilbrey') >= 0) jD[s.dm] = (jD[s.dm]||0)+1;
-        else oD[s.dm] = (oD[s.dm]||0)+1;
-      }
-      Object.keys(jD).sort().forEach(function(d) {
-        sel.innerHTML += '<option value="'+esc(d)+'">★ '+d+' ('+jD[d]+')</option>';
-      });
-      var oK = Object.keys(oD).sort();
-      if (oK.length) {
-        sel.innerHTML += '<option disabled>───</option>';
-        oK.forEach(function(d) {
-          sel.innerHTML += '<option value="'+esc(d)+'">'+d+' ('+oD[d]+')</option>';
-        });
-      }
-
-      document.getElementById('fov').value = getF().el;
-      document.getElementById('cov').value = getC().el;
-      document.getElementById('uzone').style.display = 'none';
-      document.getElementById('dash').style.display = 'flex';
-      document.getElementById('pbtn').style.display = '';
-      render();
-    } catch(err) { alert('Error: ' + err.message); }
-  */ };
+/* ── Manual file upload (fallback) ── */
+function load(file){
+  if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var wb=XLSX.read(e.target.result,{type:'array'});
+      parseWorkbook(wb);
+    }catch(err){ alert('Error reading file: '+err.message); console.error(err); }
+  };
   reader.readAsArrayBuffer(file);
 }
 
-/*  ═══ GOAL MATH ═══
-    Traffic: Shopper Trak Daily Avg × period_total_days
+/* ── Parse a workbook into store rows + populate UI ── */
+function parseWorkbook(wb){
+  var ws=wb.Sheets[wb.SheetNames[0]];
+  var raw=XLSX.utils.sheet_to_json(ws,{header:1, defval:''});
 
-    1. MOBILE (Fiscal) — MCR ≤ 7%
-       max = 7% × proj_fiscal_traffic.  need = max - fMob.
-    2. RGU (Fiscal) — FCR ≥ 10% of projected fiscal traffic
-       target = 10% × proj_fiscal_traffic.  need = target - fInst.
-    3. WATCH/TABLET (Calendar) — 2% of calendar monthly traffic
-       Daily goal = simply ceil(monthly target / days in month).
-    4. ACCESSORIES (Fiscal) — $30/box × mobile target
-       target = $30 × mobTgt.  need = target - accN.
-    5. GP (Calendar) — hit net target (col P), or push to trend (col L) if over.
-
-    On track → show the steady daily rate needed to maintain the target.
-*/
-function calc(s) {
-  var f = getF(), c = getC();
-  var projTF = Math.ceil((s.trafDay || 1) * f.tot);
-  var projTC = Math.ceil((s.trafDay || 1) * c.tot);
-
-  // 1. MOBILE (Fiscal) — MCR ≤ 7%
-  var mobTgt = Math.floor(0.07 * projTF);
-  var mobNeed = Math.max(0, mobTgt - s.fMob);
-  var mobSteady = Math.max(1, Math.ceil(mobTgt / f.tot));
-  var mobD = mobNeed === 0 ? mobSteady : Math.ceil(mobNeed / f.rem);
-
-  // 2. RGU (Fiscal) — FCR ≥ 10%
-  var rguTgt = Math.ceil(0.10 * projTF);
-  var rguNeed = Math.max(0, rguTgt - s.fInst);
-  var rguSteady = Math.max(1, Math.ceil(rguTgt / f.tot));
-  var rguD = rguNeed === 0 ? rguSteady : Math.ceil(rguNeed / f.rem);
-
-  // 3. WATCH/TABLET (Calendar) — 2% of monthly traffic
-  var wtTgt = Math.ceil(0.02 * projTC);
-  var wtD = Math.max(1, Math.ceil(wtTgt / c.tot));
-
-  // 4. ACCESSORIES (Fiscal) — $30/box × mobile target
-  var accTgt = Math.round(30 * mobTgt);
-  var accHave = Math.round(s.accN);
-  var accNeed = Math.max(0, accTgt - accHave);
-  var accSteady = Math.max(1, Math.ceil(accTgt / f.tot));
-  var accD = accNeed === 0 ? accSteady : Math.ceil(accNeed / f.rem);
-
-  // 5. GP (Calendar)
-  // If net target < $40k, boost by $10k to push struggling stores toward profitability.
-  // Always use whichever is higher: the (boosted) target or the trend.
-  // This ensures stores that are excelling keep pushing to their trend.
-  var gpTarget = s.gpTgt;
-  if (gpTarget < 40000) gpTarget = gpTarget + 10000;
-  var gpGoal = Math.max(gpTarget, s.gpTrend);
-  var gpD = Math.max(1, Math.ceil(gpGoal / c.tot));
-
-  // Subtract watches/tablets from mobile display if mobile > 10
-  // (watches+tablets count toward MCR, so showing both avoids overwhelming the team)
-  var mobDisplay = mobD;
-  if (mobD > 10) {
-    mobDisplay = Math.max(1, mobD - wtD);
+  // Find header row (the one with "Rank" in col A)
+  var hIdx=0;
+  for(var r=0;r<20;r++){
+    for(var c=0;c<10;c++){
+      if(String((raw[r]||[])[c]).toLowerCase().trim()==='rank'){ hIdx=r; break; }
+    }
+    if(hIdx>0) break;
   }
 
-  return {
-    mob: { d:mobDisplay },
-    rgu: { d:rguD },
-    wt:  { d:wtD },
-    acc: { d:accD },
-    gp:  { d:gpD }
-  };
+  S=[];
+  for(var r=hIdx+1;r<raw.length;r++){
+    var w=raw[r];
+    if(!w || !w[2]) continue;
+    var nm=String(w[2]).trim();
+    if(!nm || !w[0] || nm.toLowerCase().indexOf('total')>=0) continue;
+    S.push({
+      nm:      nm,
+      region:  String(w[1]||'').trim(),
+      rsd:     String(w[4]||'').trim(),
+      dm:      String(w[5]||'').trim() || 'Unassigned',
+      sm:      String(w[6]||'').trim(),
+      gpTrend: pf(w[11]),   // L  GP $ Trend
+      gpEst:   pf(w[12]),   // M  GP $ Est Net Trend
+      gpTgt:   pf(w[15]),   // P  Net Target GP $
+      trafDay: pf(w[30]),   // AE Shopper Trak Daily Avg
+      fInst:   pf(w[38]),   // AM Fiscal Install (all RGUs)
+      fMob:    pf(w[39]),   // AN Mobile Fiscal Install
+      tablet:  pf(w[64]),   // BM Tablet MTD
+      watches: pf(w[65]),   // BN Watches MTD
+      accN:    pf(w[81])    // CD Net Profit Accessory
+    });
+  }
+  if(!S.length){ alert('No store data found. Check the file format.'); return; }
+
+  // Region dropdown
+  var rsel=document.getElementById('rsel');
+  rsel.innerHTML='<option value="ALL">All Regions</option>';
+  var regs={};
+  for(var i=0;i<S.length;i++){ var rg=S[i].region; if(rg) regs[rg]=(regs[rg]||0)+1; }
+  Object.keys(regs).sort().forEach(function(rg){
+    rsel.innerHTML+='<option value="'+esc(rg)+'">'+rg+' ('+regs[rg]+')</option>';
+  });
+
+  // District dropdown — Jeff's DMs starred at top
+  var dsel=document.getElementById('dsel');
+  dsel.innerHTML='';
+  var jD={}, oD={};
+  for(var i=0;i<S.length;i++){
+    var s=S[i];
+    if(s.rsd.toLowerCase().indexOf('bilbrey')>=0) jD[s.dm]=(jD[s.dm]||0)+1;
+    else oD[s.dm]=(oD[s.dm]||0)+1;
+  }
+  Object.keys(jD).sort().forEach(function(d){
+    dsel.innerHTML+='<option value="'+esc(d)+'">★ '+d+' ('+jD[d]+')</option>';
+  });
+  var oK=Object.keys(oD).sort();
+  if(oK.length){
+    dsel.innerHTML+='<option disabled>──────────</option>';
+    oK.forEach(function(d){ dsel.innerHTML+='<option value="'+esc(d)+'">'+d+' ('+oD[d]+')</option>'; });
+  }
+
+  document.getElementById('fov').value=getF().el;
+  document.getElementById('cov').value=getC().el;
+  document.getElementById('uzone').style.display='none';
+  document.getElementById('dash').style.display='flex';
+  document.getElementById('pbtn').style.display='';
+  render();
 }
 
-function render() {
-  var f = getF(), c = getC();
-  document.getElementById('cv').textContent = c.el+'/'+c.tot;
-  document.getElementById('cr').textContent = c.rem+'d left';
-  document.getElementById('fv').textContent = f.el+'/'+f.tot;
-  document.getElementById('fr').textContent = f.rem+'d left';
+/* ══════════════════════════════════════════════════════════
+   GOAL MATH  (all goals always ≥ 1, always rounded UP)
 
-  var dm = document.getElementById('dsel').value;
-  var rg = document.getElementById('rsel').value;
-  var stores = [];
-  for (var i=0; i<S.length; i++) {
-    if (dm !== '' && S[i].dm !== dm) continue;
-    if (rg !== '' && S[i].region !== rg) continue;
+   Traffic projection = Shopper Trak Daily Avg × days in that period.
+
+   1. MOBILE (Fiscal, MCR ≤ 7%)
+      target = 7% × projected fiscal traffic
+      behind → ceil((target − mobile installs) / fiscal days left)
+      on track → ceil(target / fiscal total days)  [maintain pace]
+      Display offset: if mobile goal > 10, subtract watch/tablet goal
+      (watches & tablets count toward MCR, keeps the number from overwhelming staff)
+
+   2. RGUs (Fiscal, FCR ≥ 10%)
+      target = 10% × projected fiscal traffic
+      behind → ceil((target − fiscal installs) / fiscal days left)
+      on track → ceil(target / fiscal total days)
+
+   3. WATCH/TABLET (Calendar, 2% of monthly traffic)
+      target = 2% × projected calendar traffic
+      daily  = ceil(target / calendar total days)  [steady figure]
+
+   4. ACCESSORIES (Fiscal, $30 net per box × mobile target)
+      target = $30 × mobile target
+      behind → ceil((target − acc net profit) / fiscal days left)
+      on track → ceil(target / fiscal total days)
+
+   5. GP (Calendar)
+      base = Net Target GP (col P); if base < $40k, add $10k (boost struggling stores)
+      goal = max(boosted base, GP Trend col L)   [let strong stores chase trend]
+      daily = ceil(goal / calendar total days)
+   ══════════════════════════════════════════════════════════ */
+function calc(s){
+  var f=getF(), c=getC();
+  var projF = Math.ceil((s.trafDay||1) * f.tot);
+  var projC = Math.ceil((s.trafDay||1) * c.tot);
+
+  // 1. MOBILE
+  var mobTgt  = Math.floor((TH.mcr/100) * projF);
+  var mobNeed = Math.max(0, mobTgt - s.fMob);
+  var mobD    = mobNeed===0 ? Math.max(1, Math.ceil(mobTgt/f.tot))
+                            : Math.ceil(mobNeed / f.rem);
+
+  // 2. RGU
+  var rguTgt  = Math.ceil((TH.fcr/100) * projF);
+  var rguNeed = Math.max(0, rguTgt - s.fInst);
+  var rguD    = rguNeed===0 ? Math.max(1, Math.ceil(rguTgt/f.tot))
+                            : Math.ceil(rguNeed / f.rem);
+
+  // 3. WATCH/TABLET
+  var wtTgt = Math.ceil((TH.wt/100) * projC);
+  var wtD   = Math.max(1, Math.ceil(wtTgt / c.tot));
+
+  // 4. ACCESSORIES
+  var accTgt  = Math.round(TH.acc * mobTgt);
+  var accNeed = Math.max(0, accTgt - Math.round(s.accN));
+  var accD    = accNeed===0 ? Math.max(1, Math.ceil(accTgt/f.tot))
+                            : Math.ceil(accNeed / f.rem);
+
+  // 5. GP
+  var gpBase = s.gpTgt < TH.gpFloor ? s.gpTgt + TH.gpBoost : s.gpTgt;
+  var gpGoal = Math.max(gpBase, s.gpTrend);
+  var gpD    = Math.max(1, Math.ceil(gpGoal / c.tot));
+
+  // Mobile display offset (watches/tablets count toward MCR)
+  var mobDisp = mobD > 10 ? Math.max(1, mobD - wtD) : mobD;
+
+  return { mob:mobDisp, rgu:rguD, wt:wtD, acc:accD, gp:gpD };
+}
+
+/* ── Render ── */
+function render(){
+  var f=getF(), c=getC();
+  document.getElementById('cv').textContent=c.el+'/'+c.tot;
+  document.getElementById('cr').textContent=c.rem+'d left';
+  document.getElementById('fv').textContent=f.el+'/'+f.tot;
+  document.getElementById('fr').textContent=f.rem+'d left';
+
+  var dm=document.getElementById('dsel').value;
+  var rg=document.getElementById('rsel').value;
+  var stores=[];
+  for(var i=0;i<S.length;i++){
+    if(S[i].dm!==dm) continue;
+    if(rg!=='ALL' && S[i].region!==rg) continue;
     stores.push(S[i]);
   }
-  stores.sort(function(a,b) { return a.nm.localeCompare(b.nm); });
+  stores.sort(function(a,b){ return a.nm.localeCompare(b.nm); });
 
-  if (!stores.length) {
-    document.getElementById('dash').innerHTML = '<div style="color:var(--dim)">No stores.</div>';
+  if(!stores.length){
+    document.getElementById('dash').innerHTML='<div style="color:var(--dim)">No stores match this filter.</div>';
     return;
   }
 
-  var h = '<div class="box">';
-  h += '<div class="box-title">🎯 <span>Daily Goals</span></div>';
-  h += '<table><thead><tr>';
-  h += '<th style="color:var(--dim)">Store</th>';
-  h += '<th class="h-mob">📱 Mobile</th>';
-  h += '<th class="h-rgu">🏠 RGUs</th>';
-  h += '<th class="h-wt">⌚ Watch / Tab</th>';
-  h += '<th class="h-acc">🎧 Acc $</th>';
-  h += '<th class="h-gp">💰 GP $</th>';
-  h += '</tr></thead><tbody>';
+  var h='<div class="box"><div class="box-title">🎯 <span>Daily Goals</span></div><table><thead><tr>';
+  h+='<th style="color:var(--dim)">Store</th>';
+  h+='<th class="h-mob">📱 Mobile</th>';
+  h+='<th class="h-rgu">🏠 RGUs</th>';
+  h+='<th class="h-wt">⌚ Watch / Tab</th>';
+  h+='<th class="h-acc">🎧 Acc $</th>';
+  h+='<th class="h-gp">💰 GP $</th>';
+  h+='</tr></thead><tbody>';
 
-  var t = { mob:0, rgu:0, wt:0, acc:0, gp:0 };
+  var t={mob:0,rgu:0,wt:0,acc:0,gp:0};
+  for(var i=0;i<stores.length;i++){
+    var g=calc(stores[i]);
+    t.mob+=g.mob; t.rgu+=g.rgu; t.wt+=g.wt; t.acc+=g.acc; t.gp+=g.gp;
+    h+='<tr>';
+    h+='<td>'+esc(stores[i].nm)+'<span class="sm">'+esc(stores[i].sm)+'</span></td>';
+    h+='<td>'+g.mob+'</td>';
+    h+='<td>'+g.rgu+'</td>';
+    h+='<td>'+g.wt+'</td>';
+    h+='<td>$'+kF(g.acc)+'</td>';
+    h+='<td>$'+kF(g.gp)+'</td>';
+    h+='</tr>';
+  }
+  h+='<tr class="tot"><td>DISTRICT</td>';
+  h+='<td>'+t.mob+'</td><td>'+t.rgu+'</td><td>'+t.wt+'</td><td>$'+kF(t.acc)+'</td><td>$'+kF(t.gp)+'</td>';
+  h+='</tr></tbody></table></div>';
 
-  for (var i=0; i<stores.length; i++) {
-    var s = stores[i], g = calc(s);
-    t.mob += g.mob.d; t.rgu += g.rgu.d; t.wt += g.wt.d; t.acc += g.acc.d; t.gp += g.gp.d;
+  document.getElementById('dash').innerHTML=h;
+}
 
-    h += '<tr>';
-    h += '<td>' + esc(s.nm) + '<span class="sm">' + esc(s.sm) + '</span></td>';
-    h += td(g.mob, 0);
-    h += td(g.rgu, 0);
-    h += td(g.wt, 0);
-    h += td(g.acc, 1);
-    h += td(g.gp, 1);
-    h += '</tr>';
+function kF(n){
+  if(n>=100000) return (n/1000).toFixed(0)+'k';
+  if(n>=10000)  return (n/1000).toFixed(1)+'k';
+  if(n<0)       return '0';
+  return n.toLocaleString('en-US',{maximumFractionDigits:0});
+}
+
+/* Auto-pull the latest uploaded report on load, and refresh every 30 min */
+loadFromGitHub();
+setInterval(loadFromGitHub, 1800000);
+</script>
+</body>
+</html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Targets — Blufox Retail</title>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#000;--card:#0a0a0a;--card2:#0e0e0e;--border:#1c1c1c;--border2:#282828;
+  --text:#f0f0f0;--dim:#666;--dim2:#444;
+  --teal:#2dd4bf;--amber:#fbbf24;--purple:#a78bfa;--green:#34d399;
+}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);margin:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── Top bar ── */
+.bar{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;padding:.5rem 1.2rem;border-bottom:1px solid var(--border);flex-shrink:0}
+.logo{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:.9rem;background:linear-gradient(135deg,var(--teal),var(--amber));box-shadow:0 2px 10px rgba(45,212,191,.2)}
+.bar h1{font-size:1.1rem;font-weight:900;letter-spacing:-.02em}
+.spacer{flex:1}
+.btn{padding:.32rem .7rem;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:.72rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:.2rem}
+.btn:hover{border-color:#333}
+.btn-t{border-color:var(--teal);color:var(--teal)}
+select,input[type="number"]{padding:.3rem .45rem;border-radius:5px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:.78rem;outline:none}
+select{font-weight:600;min-width:150px}
+.cg{display:flex;align-items:center;gap:.25rem}
+.cl{font-size:.66rem;color:var(--dim);font-weight:600}
+
+/* ── Info strip ── */
+.strip{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;padding:.25rem 1.2rem;border-bottom:1px solid var(--border);flex-shrink:0;font-size:.66rem;font-weight:600}
+.strip .l{color:var(--dim)}.strip .v{font-family:'Space Mono',monospace}.strip .a{color:var(--teal)}.strip .b{color:var(--amber)}.strip .sep{color:#222}
+.strip .ti{display:flex;align-items:center;gap:.12rem}
+.strip .ti label{font-size:.56rem;font-weight:700;color:var(--dim)}
+.strip .ti input{width:34px;padding:.1rem .15rem;border-radius:3px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;font-size:.56rem;text-align:center}
+
+/* ── Upload ── */
+.upload{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;cursor:pointer}
+.upload:hover .ic{transform:scale(1.1)}
+.upload .ic{font-size:2.2rem;transition:transform .15s}.upload .tt{font-size:.95rem;font-weight:700}.upload .hh{font-size:.65rem;color:var(--dim)}
+
+/* ── Center ── */
+#dash{display:none;flex:1;align-items:center;justify-content:center;padding:.7rem 1.5rem;min-height:0}
+
+/* ═══ BOX ═══ */
+.box{border:2px solid var(--border2);border-radius:16px;background:var(--card);overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.6);max-width:1040px;width:100%}
+.box-title{padding:.75rem 1.6rem;font-size:1.45rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;background:var(--card2);border-bottom:2px solid var(--border2);display:flex;align-items:center;gap:.6rem}
+.box-title span{color:var(--teal)}
+
+table{border-collapse:collapse;width:100%}
+thead th{padding:.6rem 1rem;font-size:1.05rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;text-align:center;background:var(--card2);border-bottom:2px solid var(--border2);border-right:2px solid var(--border2);white-space:nowrap}
+thead th:first-child{text-align:left;padding-left:1.6rem}
+thead th:last-child{border-right:none}
+.h-mob{color:var(--teal)}.h-rgu{color:var(--purple)}.h-wt{color:#f472b6}.h-acc{color:var(--amber)}.h-gp{color:var(--green)}
+
+td{padding:.6rem 1rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.05);border-right:2px solid var(--border2);font-family:'Space Mono',monospace;font-size:1.7rem;font-weight:700}
+td:first-child{text-align:left;padding-left:1.6rem;font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:800}
+td:last-child{border-right:none}
+tbody tr:hover td{background:rgba(255,255,255,.02)}
+.sm{display:block;font-size:.72rem;color:var(--dim);font-weight:500;margin-top:2px}
+
+tr.tot td{border-top:2px solid var(--border2);background:var(--card2);font-size:1.55rem}
+tr.tot td:first-child{color:var(--dim);font-size:1.05rem}
+
+@media print{
+  body{background:#fff!important;color:#111!important;overflow:visible!important;height:auto!important}
+  .bar,.strip{display:none!important}#dash{display:flex!important}
+  .box{border:1px solid #ccc!important;box-shadow:none!important}
+  thead th{background:#f5f5f5!important;color:#333!important;border-color:#ddd!important}
+  td{border-color:#eee!important;color:#111!important}
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="logo">🎯</div>
+  <h1>Daily Targets</h1>
+  <div class="spacer"></div>
+  <div class="cg"><span class="cl">Region:</span><select id="rsel" onchange="render()"><option value="ALL">All Regions</option></select></div>
+  <div class="cg"><span class="cl">District:</span><select id="dsel" onchange="render()"></select></div>
+  <div class="cg"><span class="cl">Fiscal:</span><input type="number" id="fov" min="1" max="31" style="width:32px" onchange="render()"></div>
+  <div class="cg"><span class="cl">Cal:</span><input type="number" id="cov" min="1" max="31" style="width:32px" onchange="render()"></div>
+  <label class="btn btn-t">📂 Upload<input type="file" id="fi" accept=".xlsx,.xls" style="display:none" onchange="load(this.files[0])"></label>
+  <button class="btn" onclick="window.print()" id="pbtn" style="display:none">🖨️</button>
+</div>
+
+<div class="strip">
+  <span class="l">📅 Cal</span><span class="v" id="cv"></span><span class="a" id="cr"></span>
+  <span class="sep">|</span>
+  <span class="l">⚡ Fiscal</span><span class="v" id="fv"></span><span class="b" id="fr"></span>
+  <span class="sep" style="margin-left:auto">|</span><span class="l">⚙️</span>
+  <div class="ti"><label>MCR≤</label><input value="7" data-k="mcr" onchange="TH[this.dataset.k]=+this.value||0;render()">%</div>
+  <div class="ti"><label>FCR≥</label><input value="10" data-k="fcr" onchange="TH[this.dataset.k]=+this.value||0;render()">%</div>
+  <div class="ti"><label>W/T≥</label><input value="2" step="0.1" data-k="wt" onchange="TH[this.dataset.k]=+this.value||0;render()">%</div>
+  <div class="ti"><label>Acc≥$</label><input value="30" data-k="acc" onchange="TH[this.dataset.k]=+this.value||0;render()"></div>
+  <div class="ti"><label>GP boost<$</label><input value="40000" step="1000" data-k="gpFloor" style="width:54px" onchange="TH[this.dataset.k]=+this.value||0;render()"></div>
+</div>
+
+<div class="upload" id="uzone" ondragover="event.preventDefault()" ondrop="event.preventDefault();load(event.dataTransfer.files[0])" onclick="document.getElementById('fi').click()">
+  <div class="ic">📊</div>
+  <div class="tt">Drop your sales report here</div>
+  <div class="hh">.xlsx Blufox / Spectrum weekly report</div>
+</div>
+
+<div id="dash"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   DAILY TARGETS — Blufox Retail
+   Thresholds (editable in the UI):
+     mcr 7%  · fcr 10%  · wt 2%  · acc $30/box  · GP boost floor $40k, +$10k
+   ══════════════════════════════════════════════════════════ */
+var S = [];
+var now = new Date();
+var TH = { mcr:7, fcr:10, wt:2, acc:30, gpFloor:40000, gpBoost:10000 };
+
+/* ── Periods ── */
+function fisBounds(){          // Fiscal month runs 22nd → 21st
+  var y=now.getFullYear(), m=now.getMonth(), d=now.getDate();
+  if(d>=22) return {s:new Date(y,m,22), e:new Date(y,m+1,21)};
+  return {s:new Date(y,m-1,22), e:new Date(y,m,21)};
+}
+function getF(){
+  var ov=parseInt(document.getElementById('fov').value)||0;
+  var b=fisBounds(), tot=Math.round((b.e-b.s)/864e5)+1;
+  var el=ov>0?ov:Math.round((now-b.s)/864e5)+1;
+  return {el:el, tot:tot, rem:Math.max(1,tot-el)};
+}
+function getC(){
+  var ov=parseInt(document.getElementById('cov').value)||0;
+  var el=ov>0?ov:now.getDate();
+  var tot=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+  return {el:el, tot:tot, rem:Math.max(1,tot-el)};
+}
+function pf(v){ var n=parseFloat(v); return isNaN(n)?0:n; }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+/* ── Data source: the same file the upload page writes to ──
+   When this page is hosted inside the Daily-Sales-Report repo, the data sits
+   right next to it at data/Sales Report.xlsx — a same-origin request (most
+   reliable). If that 404s (e.g. hosted elsewhere) we fall back to the absolute
+   raw GitHub URL, then finally to manual upload. */
+var DATA_URLS = [
+  'data/Sales%20Report.xlsx',                                                              // same-origin (deployed in repo)
+  'https://raw.githubusercontent.com/BlufoxMobile/Daily-Sales-Report/main/data/Sales%20Report.xlsx' // cross-origin fallback
+];
+
+/* ── Auto-load on page open ── */
+function loadFromGitHub(){
+  var status=document.getElementById('uzone');
+  if(status){
+    status.querySelector('.tt').textContent='Loading latest report…';
+    status.querySelector('.hh').textContent='Pulling from the Blufox dashboards';
+  }
+  tryFetch(0);
+}
+
+function tryFetch(i){
+  if(i >= DATA_URLS.length){
+    // All sources failed — show manual upload
+    var status=document.getElementById('uzone');
+    if(status){
+      status.querySelector('.tt').textContent='Drop your sales report here';
+      status.querySelector('.hh').textContent='Auto-load unavailable here — upload manually (.xlsx)';
+    }
+    return;
+  }
+  fetch(DATA_URLS[i] + '?t=' + Date.now())
+    .then(function(resp){
+      if(!resp.ok) throw new Error('HTTP '+resp.status);
+      return resp.arrayBuffer();
+    })
+    .then(function(buf){
+      var wb=XLSX.read(buf,{type:'array'});
+      parseWorkbook(wb);
+    })
+    .catch(function(err){
+      console.warn('Source '+(i+1)+' failed:', err.message);
+      tryFetch(i+1);   // try the next source
+    });
+}
+
+/* ── Manual file upload (fallback) ── */
+function load(file){
+  if(!file) return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var wb=XLSX.read(e.target.result,{type:'array'});
+      parseWorkbook(wb);
+    }catch(err){ alert('Error reading file: '+err.message); console.error(err); }
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+/* ── Parse a workbook into store rows + populate UI ── */
+function parseWorkbook(wb){
+  var ws=wb.Sheets[wb.SheetNames[0]];
+  var raw=XLSX.utils.sheet_to_json(ws,{header:1, defval:''});
+
+  // Find header row (the one with "Rank" in col A)
+  var hIdx=0;
+  for(var r=0;r<20;r++){
+    for(var c=0;c<10;c++){
+      if(String((raw[r]||[])[c]).toLowerCase().trim()==='rank'){ hIdx=r; break; }
+    }
+    if(hIdx>0) break;
   }
 
-  h += '<tr class="tot">';
-  h += '<td>DISTRICT</td>';
-  h += '<td>' + t.mob + '</td>';
-  h += '<td>' + t.rgu + '</td>';
-  h += '<td>' + t.wt + '</td>';
-  h += '<td>$' + kF(t.acc) + '</td>';
-  h += '<td>$' + kF(t.gp) + '</td>';
-  h += '</tr>';
+  S=[];
+  for(var r=hIdx+1;r<raw.length;r++){
+    var w=raw[r];
+    if(!w || !w[2]) continue;
+    var nm=String(w[2]).trim();
+    if(!nm || !w[0] || nm.toLowerCase().indexOf('total')>=0) continue;
+    S.push({
+      nm:      nm,
+      region:  String(w[1]||'').trim(),
+      rsd:     String(w[4]||'').trim(),
+      dm:      String(w[5]||'').trim() || 'Unassigned',
+      sm:      String(w[6]||'').trim(),
+      gpTrend: pf(w[11]),   // L  GP $ Trend
+      gpEst:   pf(w[12]),   // M  GP $ Est Net Trend
+      gpTgt:   pf(w[15]),   // P  Net Target GP $
+      trafDay: pf(w[30]),   // AE Shopper Trak Daily Avg
+      fInst:   pf(w[38]),   // AM Fiscal Install (all RGUs)
+      fMob:    pf(w[39]),   // AN Mobile Fiscal Install
+      tablet:  pf(w[64]),   // BM Tablet MTD
+      watches: pf(w[65]),   // BN Watches MTD
+      accN:    pf(w[81])    // CD Net Profit Accessory
+    });
+  }
+  if(!S.length){ alert('No store data found. Check the file format.'); return; }
 
-  h += '</tbody></table></div>';
-  document.getElementById('dash').innerHTML = h;
+  // Region dropdown
+  var rsel=document.getElementById('rsel');
+  rsel.innerHTML='<option value="ALL">All Regions</option>';
+  var regs={};
+  for(var i=0;i<S.length;i++){ var rg=S[i].region; if(rg) regs[rg]=(regs[rg]||0)+1; }
+  Object.keys(regs).sort().forEach(function(rg){
+    rsel.innerHTML+='<option value="'+esc(rg)+'">'+rg+' ('+regs[rg]+')</option>';
+  });
+
+  // District dropdown — Jeff's DMs starred at top
+  var dsel=document.getElementById('dsel');
+  dsel.innerHTML='';
+  var jD={}, oD={};
+  for(var i=0;i<S.length;i++){
+    var s=S[i];
+    if(s.rsd.toLowerCase().indexOf('bilbrey')>=0) jD[s.dm]=(jD[s.dm]||0)+1;
+    else oD[s.dm]=(oD[s.dm]||0)+1;
+  }
+  Object.keys(jD).sort().forEach(function(d){
+    dsel.innerHTML+='<option value="'+esc(d)+'">★ '+d+' ('+jD[d]+')</option>';
+  });
+  var oK=Object.keys(oD).sort();
+  if(oK.length){
+    dsel.innerHTML+='<option disabled>──────────</option>';
+    oK.forEach(function(d){ dsel.innerHTML+='<option value="'+esc(d)+'">'+d+' ('+oD[d]+')</option>'; });
+  }
+
+  document.getElementById('fov').value=getF().el;
+  document.getElementById('cov').value=getC().el;
+  document.getElementById('uzone').style.display='none';
+  document.getElementById('dash').style.display='flex';
+  document.getElementById('pbtn').style.display='';
+  render();
 }
 
-function td(m, isDollar) {
-  var v = isDollar ? '$' + kF(m.d) : '' + m.d;
-  return '<td>' + v + '</td>';
+/* ══════════════════════════════════════════════════════════
+   GOAL MATH  (all goals always ≥ 1, always rounded UP)
+
+   Traffic projection = Shopper Trak Daily Avg × days in that period.
+
+   1. MOBILE (Fiscal, MCR ≤ 7%)
+      target = 7% × projected fiscal traffic
+      behind → ceil((target − mobile installs) / fiscal days left)
+      on track → ceil(target / fiscal total days)  [maintain pace]
+      Display offset: if mobile goal > 10, subtract watch/tablet goal
+      (watches & tablets count toward MCR, keeps the number from overwhelming staff)
+
+   2. RGUs (Fiscal, FCR ≥ 10%)
+      target = 10% × projected fiscal traffic
+      behind → ceil((target − fiscal installs) / fiscal days left)
+      on track → ceil(target / fiscal total days)
+
+   3. WATCH/TABLET (Calendar, 2% of monthly traffic)
+      target = 2% × projected calendar traffic
+      daily  = ceil(target / calendar total days)  [steady figure]
+
+   4. ACCESSORIES (Fiscal, $30 net per box × mobile target)
+      target = $30 × mobile target
+      behind → ceil((target − acc net profit) / fiscal days left)
+      on track → ceil(target / fiscal total days)
+
+   5. GP (Calendar)
+      base = Net Target GP (col P); if base < $40k, add $10k (boost struggling stores)
+      goal = max(boosted base, GP Trend col L)   [let strong stores chase trend]
+      daily = ceil(goal / calendar total days)
+   ══════════════════════════════════════════════════════════ */
+function calc(s){
+  var f=getF(), c=getC();
+  var projF = Math.ceil((s.trafDay||1) * f.tot);
+  var projC = Math.ceil((s.trafDay||1) * c.tot);
+
+  // 1. MOBILE
+  var mobTgt  = Math.floor((TH.mcr/100) * projF);
+  var mobNeed = Math.max(0, mobTgt - s.fMob);
+  var mobD    = mobNeed===0 ? Math.max(1, Math.ceil(mobTgt/f.tot))
+                            : Math.ceil(mobNeed / f.rem);
+
+  // 2. RGU
+  var rguTgt  = Math.ceil((TH.fcr/100) * projF);
+  var rguNeed = Math.max(0, rguTgt - s.fInst);
+  var rguD    = rguNeed===0 ? Math.max(1, Math.ceil(rguTgt/f.tot))
+                            : Math.ceil(rguNeed / f.rem);
+
+  // 3. WATCH/TABLET
+  var wtTgt = Math.ceil((TH.wt/100) * projC);
+  var wtD   = Math.max(1, Math.ceil(wtTgt / c.tot));
+
+  // 4. ACCESSORIES
+  var accTgt  = Math.round(TH.acc * mobTgt);
+  var accNeed = Math.max(0, accTgt - Math.round(s.accN));
+  var accD    = accNeed===0 ? Math.max(1, Math.ceil(accTgt/f.tot))
+                            : Math.ceil(accNeed / f.rem);
+
+  // 5. GP
+  var gpBase = s.gpTgt < TH.gpFloor ? s.gpTgt + TH.gpBoost : s.gpTgt;
+  var gpGoal = Math.max(gpBase, s.gpTrend);
+  var gpD    = Math.max(1, Math.ceil(gpGoal / c.tot));
+
+  // Mobile display offset (watches/tablets count toward MCR)
+  var mobDisp = mobD > 10 ? Math.max(1, mobD - wtD) : mobD;
+
+  return { mob:mobDisp, rgu:rguD, wt:wtD, acc:accD, gp:gpD };
 }
 
-function kF(n) {
-  if (n >= 100000) return (n/1000).toFixed(0) + 'k';
-  if (n >= 10000) return (n/1000).toFixed(1) + 'k';
-  if (n < 0) return '0';
-  return n.toLocaleString('en-US', {maximumFractionDigits:0});
+/* ── Render ── */
+function render(){
+  var f=getF(), c=getC();
+  document.getElementById('cv').textContent=c.el+'/'+c.tot;
+  document.getElementById('cr').textContent=c.rem+'d left';
+  document.getElementById('fv').textContent=f.el+'/'+f.tot;
+  document.getElementById('fr').textContent=f.rem+'d left';
+
+  var dm=document.getElementById('dsel').value;
+  var rg=document.getElementById('rsel').value;
+  var stores=[];
+  for(var i=0;i<S.length;i++){
+    if(S[i].dm!==dm) continue;
+    if(rg!=='ALL' && S[i].region!==rg) continue;
+    stores.push(S[i]);
+  }
+  stores.sort(function(a,b){ return a.nm.localeCompare(b.nm); });
+
+  if(!stores.length){
+    document.getElementById('dash').innerHTML='<div style="color:var(--dim)">No stores match this filter.</div>';
+    return;
+  }
+
+  var h='<div class="box"><div class="box-title">🎯 <span>Daily Goals</span></div><table><thead><tr>';
+  h+='<th style="color:var(--dim)">Store</th>';
+  h+='<th class="h-mob">📱 Mobile</th>';
+  h+='<th class="h-rgu">🏠 RGUs</th>';
+  h+='<th class="h-wt">⌚ Watch / Tab</th>';
+  h+='<th class="h-acc">🎧 Acc $</th>';
+  h+='<th class="h-gp">💰 GP $</th>';
+  h+='</tr></thead><tbody>';
+
+  var t={mob:0,rgu:0,wt:0,acc:0,gp:0};
+  for(var i=0;i<stores.length;i++){
+    var g=calc(stores[i]);
+    t.mob+=g.mob; t.rgu+=g.rgu; t.wt+=g.wt; t.acc+=g.acc; t.gp+=g.gp;
+    h+='<tr>';
+    h+='<td>'+esc(stores[i].nm)+'<span class="sm">'+esc(stores[i].sm)+'</span></td>';
+    h+='<td>'+g.mob+'</td>';
+    h+='<td>'+g.rgu+'</td>';
+    h+='<td>'+g.wt+'</td>';
+    h+='<td>$'+kF(g.acc)+'</td>';
+    h+='<td>$'+kF(g.gp)+'</td>';
+    h+='</tr>';
+  }
+  h+='<tr class="tot"><td>DISTRICT</td>';
+  h+='<td>'+t.mob+'</td><td>'+t.rgu+'</td><td>'+t.wt+'</td><td>$'+kF(t.acc)+'</td><td>$'+kF(t.gp)+'</td>';
+  h+='</tr></tbody></table></div>';
+
+  document.getElementById('dash').innerHTML=h;
 }
+
+function kF(n){
+  if(n>=100000) return (n/1000).toFixed(0)+'k';
+  if(n>=10000)  return (n/1000).toFixed(1)+'k';
+  if(n<0)       return '0';
+  return n.toLocaleString('en-US',{maximumFractionDigits:0});
+}
+
+/* Auto-pull the latest uploaded report on load, and refresh every 30 min */
+loadFromGitHub();
+setInterval(loadFromGitHub, 1800000);
 </script>
 </body>
 </html>
