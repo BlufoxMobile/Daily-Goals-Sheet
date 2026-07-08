@@ -5,433 +5,769 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Targets — Blufox Retail</title>
 <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#000;--card:#0a0a0a;--card2:#0e0e0e;--border:#1c1c1c;--border2:#282828;
-  --text:#f0f0f0;--dim:#666;--dim2:#444;
-  --teal:#2dd4bf;--amber:#fbbf24;--purple:#a78bfa;--green:#34d399;
+  --ink:#181d2a; --ink2:#3a4256; --soft:#6b7488; --faint:#9aa2b4;
+  --paper:#f6f4ef; --paper2:#fffdf8; --card:#fff;
+  --line:#e8e3d8; --line2:#ded8ca;
+  --brand:#1f5fd0; --brand-d:#163f8c; --brand-soft:#e9f0fd;
+  --green:#1d8a5e; --green-bg:#e7f5ee;
+  --amber:#bd7d12; --amber-bg:#fbf1dc;
+  --red:#cf4438;   --red-bg:#fbe9e7;
 }
-body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);margin:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+html{background:var(--paper)}
+body{
+  font-family:'Hanken Grotesk',system-ui,sans-serif;
+  background:var(--paper); color:var(--ink);
+  min-height:100vh; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:1.4rem 1.2rem 3rem}
 
-/* ── Top bar ── */
-.bar{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;padding:.5rem 1.2rem;border-bottom:1px solid var(--border);flex-shrink:0}
-.logo{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:.9rem;background:linear-gradient(135deg,var(--teal),var(--amber));box-shadow:0 2px 10px rgba(45,212,191,.2)}
-.bar h1{font-size:1.1rem;font-weight:900;letter-spacing:-.02em}
-.spacer{flex:1}
-.btn{padding:.32rem .7rem;border-radius:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:.72rem;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:.2rem}
-.btn:hover{border-color:#333}
-.btn-t{border-color:var(--teal);color:var(--teal)}
-select,input[type="number"]{padding:.3rem .45rem;border-radius:5px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:.78rem;outline:none}
-select{font-weight:600;min-width:120px;max-width:46vw}
-.cg{display:flex;align-items:center;gap:.25rem}
-.cl{font-size:.66rem;color:var(--dim);font-weight:600}
+/* ── Header ── */
+header.masthead{border-bottom:2px solid var(--ink);padding-bottom:1rem;margin-bottom:.9rem}
+.mast-top{display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap}
+h1{
+  font-family:'Fraunces',serif;font-weight:700;font-size:clamp(1.8rem,4.5vw,2.6rem);
+  letter-spacing:-.01em;color:var(--ink);
+}
+h1 .accent{color:var(--brand)}
+.dateline{font-size:.86rem;color:var(--ink2);font-weight:600;margin-top:.25rem}
+.dateline b{color:var(--ink)}
+.dateline .dot{color:var(--faint);margin:0 .35rem}
+.stamp{font-size:.74rem;color:var(--soft);margin-top:.2rem}
+.stamp .ok{color:var(--green);font-weight:600}
+.stamp .warn{color:var(--amber);font-weight:600}
 
-/* Mobile: tighten the control bars so they don't eat the screen */
-@media (max-width:640px){
-  .bar{gap:.4rem;padding:.4rem .6rem}
-  .bar h1{font-size:.95rem}
-  .strip{gap:.35rem;padding:.25rem .6rem;font-size:.6rem}
-  select{min-width:100px}
+/* ── Controls ── */
+.controls{
+  display:flex;align-items:flex-end;gap:.9rem;flex-wrap:wrap;
+  margin:.9rem 0 1.3rem;
+}
+.ctl{display:flex;flex-direction:column;gap:.22rem}
+.ctl label{font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+select,input[type="number"]{
+  font-family:inherit;font-size:.86rem;font-weight:600;color:var(--ink);
+  background:var(--card);border:1px solid var(--line2);border-radius:8px;
+  padding:.42rem .55rem;outline:none;
+}
+select{min-width:150px;max-width:60vw}
+select:focus,input[type="number"]:focus{border-color:var(--brand);box-shadow:0 0 0 3px var(--brand-soft)}
+input[type="number"]{width:64px;text-align:center}
+.btn{
+  font-family:inherit;font-size:.84rem;font-weight:700;cursor:pointer;
+  border:1px solid var(--line2);border-radius:8px;background:var(--card);
+  color:var(--ink2);padding:.44rem .85rem;display:inline-flex;align-items:center;gap:.35rem;
+}
+.btn:hover{border-color:var(--brand);color:var(--brand)}
+.btn-brand{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn-brand:hover{background:var(--brand-d);border-color:var(--brand-d);color:#fff}
+.ctl-spacer{flex:1}
+
+/* ── Loading / empty / error ── */
+.state{
+  background:var(--paper2);border:1px dashed var(--line2);border-radius:16px;
+  padding:3rem 1.5rem;text-align:center;cursor:pointer;
+}
+.state .big{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:600;color:var(--ink2)}
+.state .sub{font-size:.84rem;color:var(--soft);margin-top:.4rem;line-height:1.5}
+.state .icon{font-size:2rem;margin-bottom:.5rem}
+.state.dragover{border-color:var(--brand);background:var(--brand-soft)}
+
+/* ── District group ── */
+.district{margin-bottom:2.2rem}
+.dist-head{
+  display:flex;align-items:baseline;gap:.7rem;flex-wrap:wrap;
+  border-bottom:1px solid var(--line2);padding-bottom:.45rem;margin-bottom:.75rem;
+}
+.dist-head h2{font-family:'Fraunces',serif;font-size:1.28rem;font-weight:600;color:var(--ink)}
+.dist-head .star{color:var(--amber)}
+.dist-head .meta{font-size:.76rem;color:var(--soft);font-weight:600}
+
+/* District summary strip */
+.dist-sum{
+  display:flex;flex-wrap:wrap;gap:.55rem .9rem;align-items:center;
+  background:var(--paper2);border:1px solid var(--line);border-radius:12px;
+  padding:.6rem .9rem;margin-bottom:.9rem;
+}
+.dist-sum .lbl{font-size:.64rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--soft)}
+.dist-sum .kv{display:flex;align-items:baseline;gap:.3rem}
+.dist-sum .kv .k{font-size:.72rem;color:var(--ink2);font-weight:600}
+.dist-sum .kv .v{font-size:1.02rem;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.dist-sum .divider{width:1px;height:1.4rem;background:var(--line2)}
+.dist-sum .counts{display:flex;gap:.4rem;flex-wrap:wrap}
+.chip{font-size:.7rem;font-weight:700;border-radius:99px;padding:.16rem .55rem}
+.chip.g{background:var(--green-bg);color:var(--green)}
+.chip.a{background:var(--amber-bg);color:var(--amber)}
+.chip.r{background:var(--red-bg);color:var(--red)}
+.chip.n{background:var(--paper);color:var(--soft);border:1px solid var(--line2)}
+
+/* ── Store card ── */
+.stores{display:grid;grid-template-columns:1fr;gap:.9rem}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:1rem 1.1rem 1.1rem;box-shadow:0 1px 3px rgba(24,29,42,.05);
+  break-inside:avoid;page-break-inside:avoid;
+}
+.card-head{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin-bottom:.8rem}
+.card-head h3{font-family:'Fraunces',serif;font-size:1.14rem;font-weight:600;color:var(--ink)}
+.card-head .sm-name{font-size:.74rem;color:var(--soft);font-weight:600}
+.pill{
+  margin-left:auto;font-size:.72rem;font-weight:700;border-radius:99px;
+  padding:.24rem .7rem;white-space:nowrap;
+}
+.pill.stretch{background:var(--amber-bg);color:var(--amber)}
+.pill.on{background:var(--green-bg);color:var(--green)}
+.pill.behind{background:var(--red-bg);color:var(--red)}
+.pill.nodata{background:var(--paper);color:var(--soft);border:1px solid var(--line2)}
+
+/* KPI tiles */
+.tiles{
+  display:grid;gap:.6rem;
+  grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
+}
+.tile{
+  border:1px solid var(--line);border-radius:12px;background:var(--paper2);
+  padding:.65rem .7rem .7rem;position:relative;
+}
+.tile.t-stretch{border-color:var(--amber);background:var(--amber-bg)}
+.tile.t-hit{border-color:var(--green);background:var(--green-bg)}
+.tile.t-nodata{opacity:.75}
+.tile .k-head{display:flex;align-items:center;gap:.3rem;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.tile .goal{
+  font-size:1.72rem;font-weight:800;color:var(--ink);line-height:1.15;
+  margin:.18rem 0 .1rem;font-variant-numeric:tabular-nums;letter-spacing:-.01em;
+}
+.tile .goal .unit{font-size:.72rem;font-weight:700;color:var(--soft);margin-left:.2rem;letter-spacing:0;text-transform:none}
+.bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin:.32rem 0 .3rem}
+.bar i{display:block;height:100%;border-radius:99px;background:var(--brand)}
+.bar.b-hit i{background:var(--green)}
+.bar.b-behind i{background:var(--red)}
+.bar.b-stretch i{background:var(--amber)}
+.tile .line{font-size:.7rem;color:var(--ink2);line-height:1.45}
+.tile .line b{font-variant-numeric:tabular-nums}
+.tile .muted{color:var(--soft)}
+.tile .note{font-size:.68rem;font-weight:700;margin-top:.22rem}
+.tile .note.up{color:var(--amber)}
+.tile .note.hit{color:var(--green)}
+.tile .note.warn{color:var(--soft)}
+.tile .pct{float:right;font-size:.68rem;font-weight:700;color:var(--soft);font-variant-numeric:tabular-nums}
+
+.footer-note{margin-top:2rem;font-size:.72rem;color:var(--faint);text-align:center}
+
+@media (min-width:1400px){ .wrap{max-width:1360px} }
+@media (max-width:520px){
+  .wrap{padding:1rem .7rem 2rem}
+  .tiles{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+  .tile .goal{font-size:1.45rem}
 }
 
-/* ── Info strip ── */
-.strip{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;padding:.25rem 1.2rem;border-bottom:1px solid var(--border);flex-shrink:0;font-size:.66rem;font-weight:600}
-.strip .l{color:var(--dim)}.strip .v{font-family:'Space Mono',monospace}.strip .a{color:var(--teal)}.strip .b{color:var(--amber)}.strip .sep{color:#222}
-.strip .ti{display:flex;align-items:center;gap:.12rem}
-.strip .ti label{font-size:.56rem;font-weight:700;color:var(--dim)}
-.strip .ti input{width:34px;padding:.1rem .15rem;border-radius:3px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-family:'Space Mono',monospace;font-size:.56rem;text-align:center}
-
-/* ── Upload ── */
-.upload{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;cursor:pointer}
-.upload:hover .ic{transform:scale(1.1)}
-.upload .ic{font-size:2.2rem;transition:transform .15s}.upload .tt{font-size:.95rem;font-weight:700}.upload .hh{font-size:.65rem;color:var(--dim)}
-
-/* ── Center + auto-fit scaler ── */
-#dash{display:none;flex:1;align-items:center;justify-content:center;padding:.5rem;min-height:0;overflow:hidden;position:relative}
-#scaler{transform-origin:center center;will-change:transform}
-
-/* ═══ BOX ═══ (laid out at a comfortable fixed design size, then scaled to fit any screen) */
-.box{border:2px solid var(--border2);border-radius:16px;background:var(--card);overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.6);width:1000px}
-.box-title{padding:.75rem 1.6rem;font-size:1.45rem;font-weight:900;text-transform:uppercase;letter-spacing:.06em;background:var(--card2);border-bottom:2px solid var(--border2);display:flex;align-items:center;gap:.6rem}
-.box-title span{color:var(--teal)}
-
-table{border-collapse:collapse;width:100%}
-thead th{padding:.6rem 1rem;font-size:1.05rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em;text-align:center;background:var(--card2);border-bottom:2px solid var(--border2);border-right:2px solid var(--border2);white-space:nowrap}
-thead th:first-child{text-align:left;padding-left:1.6rem}
-thead th:last-child{border-right:none}
-.h-mob{color:var(--teal)}.h-rgu{color:var(--purple)}.h-wt{color:#f472b6}.h-acc{color:var(--amber)}.h-gp{color:var(--green)}
-
-td{padding:.6rem 1rem;text-align:center;border-bottom:1px solid rgba(255,255,255,.05);border-right:2px solid var(--border2);font-family:'Space Mono',monospace;font-size:1.7rem;font-weight:700}
-td:first-child{text-align:left;padding-left:1.6rem;font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:800}
-td:last-child{border-right:none}
-tbody tr:hover td{background:rgba(255,255,255,.02)}
-.sm{display:block;font-size:.72rem;color:var(--dim);font-weight:500;margin-top:2px}
-
-tr.tot td{border-top:2px solid var(--border2);background:var(--card2);font-size:1.55rem}
-tr.tot td:first-child{color:var(--dim);font-size:1.05rem}
-
+/* ── Print: clean letter-size sheet ── */
 @media print{
-  body{background:#fff!important;color:#111!important;overflow:visible!important;height:auto!important}
-  .bar,.strip{display:none!important}#dash{display:flex!important}
-  #scaler{transform:none!important}
-  .box{border:1px solid #ccc!important;box-shadow:none!important}
-  thead th{background:#f5f5f5!important;color:#333!important;border-color:#ddd!important}
-  td{border-color:#eee!important;color:#111!important}
+  @page{size:letter;margin:.5in}
+  html,body{background:#fff}
+  .controls,.btn,.state,.footer-note{display:none!important}
+  .wrap{max-width:none;padding:0}
+  header.masthead{border-color:#000;margin-bottom:.6rem}
+  .stamp{color:#555}
+  .card{box-shadow:none;border-color:#ccc}
+  .district{margin-bottom:1.1rem}
+  .tile{background:#fff;border-color:#ccc}
+  .tile.t-stretch{background:#fff;border-color:#bd7d12}
+  .tile.t-hit{background:#fff;border-color:#1d8a5e}
+  .dist-sum{background:#fff;border-color:#ccc}
+  a{text-decoration:none;color:inherit}
 }
 </style>
 </head>
 <body>
+<div class="wrap">
 
-<div class="bar">
-  <div class="logo">🎯</div>
-  <h1>Daily Targets</h1>
-  <div class="spacer"></div>
-  <div class="cg"><span class="cl">Region:</span><select id="rsel" onchange="render()"><option value="ALL">All Regions</option></select></div>
-  <div class="cg"><span class="cl">District:</span><select id="dsel" onchange="render()"></select></div>
-  <div class="cg"><span class="cl">Fiscal:</span><input type="number" id="fov" min="1" max="31" style="width:32px" onchange="render()"></div>
-  <div class="cg"><span class="cl">Cal:</span><input type="number" id="cov" min="1" max="31" style="width:32px" onchange="render()"></div>
-  <label class="btn btn-t">📂 Upload<input type="file" id="fi" accept=".xlsx,.xls" style="display:none" onchange="load(this.files[0])"></label>
-  <button class="btn" onclick="window.print()" id="pbtn" style="display:none">🖨️</button>
+  <header class="masthead">
+    <div class="mast-top">
+      <h1>Daily <span class="accent">Targets</span></h1>
+    </div>
+    <div class="dateline" id="dateline">Loading period…</div>
+    <div class="stamp" id="stamp">Waiting for the latest sales report…</div>
+  </header>
+
+  <div class="controls" id="controls">
+    <div class="ctl"><label for="rsel">Region</label>
+      <select id="rsel" onchange="render()"><option value="ALL">All Regions</option></select></div>
+    <div class="ctl"><label for="dsel">District</label>
+      <select id="dsel" onchange="render()"><option value="ALL">All Districts</option></select></div>
+    <div class="ctl"><label for="fov">Fiscal day</label>
+      <input type="number" id="fov" min="1" max="31" placeholder="auto" onchange="render()"></div>
+    <div class="ctl"><label for="cov">Calendar day</label>
+      <input type="number" id="cov" min="1" max="31" placeholder="auto" onchange="render()"></div>
+    <div class="ctl-spacer"></div>
+    <label class="btn">📂 Upload report<input type="file" id="fi" accept=".xlsx,.xls" style="display:none" onchange="loadFile(this.files[0])"></label>
+    <button class="btn btn-brand" onclick="window.print()">🖨 Print</button>
+  </div>
+
+  <div class="state" id="loadState"
+       ondragover="event.preventDefault();this.classList.add('dragover')"
+       ondragleave="this.classList.remove('dragover')"
+       ondrop="event.preventDefault();this.classList.remove('dragover');loadFile(event.dataTransfer.files[0])"
+       onclick="document.getElementById('fi').click()">
+    <div class="icon">📊</div>
+    <div class="big" id="stateBig">Pulling the latest sales report…</div>
+    <div class="sub" id="stateSub">Auto-loading from the Blufox dashboards. You can also drop the .xlsx here or click to browse.</div>
+  </div>
+
+  <div id="board"></div>
+
+  <div class="footer-note">Blufox Retail · goals computed by the shared BFX goal engine · fiscal month runs the 22nd–21st · days remaining include today</div>
 </div>
-
-<div class="strip">
-  <span class="l">📅 Cal</span><span class="v" id="cv"></span><span class="a" id="cr"></span>
-  <span class="sep">|</span>
-  <span class="l">⚡ Fiscal</span><span class="v" id="fv"></span><span class="b" id="fr"></span>
-  <span class="sep" style="margin-left:auto">|</span><span class="l">⚙️</span>
-  <div class="ti"><label>MCR≤</label><input value="7" data-k="mcr" onchange="TH[this.dataset.k]=+this.value||0;render()">%</div>
-  <div class="ti"><label>FCR≥</label><input value="10" data-k="fcr" onchange="TH[this.dataset.k]=+this.value||0;render()">%</div>
-  <div class="ti"><label>W/T≥</label><input value="2" step="0.1" data-k="wt" onchange="TH[this.dataset.k]=+this.value||0;render()">%</div>
-  <div class="ti"><label>Acc≥$</label><input value="30" data-k="acc" onchange="TH[this.dataset.k]=+this.value||0;render()"></div>
-  <div class="ti"><label>GP boost<$</label><input value="40000" step="1000" data-k="gpFloor" style="width:54px" onchange="TH[this.dataset.k]=+this.value||0;render()"></div>
-</div>
-
-<div class="upload" id="uzone" ondragover="event.preventDefault()" ondrop="event.preventDefault();load(event.dataTransfer.files[0])" onclick="document.getElementById('fi').click()">
-  <div class="ic">📊</div>
-  <div class="tt">Drop your sales report here</div>
-  <div class="hh">.xlsx Blufox / Spectrum weekly report</div>
-</div>
-
-<div id="dash"></div>
 
 <script>
-/* ══════════════════════════════════════════════════════════
-   DAILY TARGETS — Blufox Retail
-   Thresholds (editable in the UI):
-     mcr 7%  · fcr 10%  · wt 2%  · acc $30/box  · GP boost floor $40k, +$10k
-   ══════════════════════════════════════════════════════════ */
-var S = [];
-var now = new Date();
-var TH = { mcr:7, fcr:10, wt:2, acc:30, gpFloor:40000, gpBoost:10000 };
+/* ============================================================
+   BLUFOX SMART GOAL ENGINE  v1.0  (shared module)
+   Embed this block VERBATIM in:
+     - Daily-Goals-Sheet/index.html
+     - One-On-One-Form/index.html
+     - NPS email module (NPS-Index---Medallia/index.html + Daily-Sales-Report/upload.html)
+   ------------------------------------------------------------
+   DESIGN (agreed with Jeff, July 2026):
+   - DUAL PERIOD:
+       * FISCAL month (22nd -> 21st): drives MCR / FCR / NPS pacing,
+         because close rates are measured fiscally.
+       * CALENDAR month: drives GP $, Accessory $, Watch/Tablet units,
+         because the sales report counts those units calendar-MTD and
+         the Monthly Target Planner assigns calendar-month goals.
+   - PACING: need = goal - MTD actual; daily = ceil(need / daysRemaining)
+     where daysRemaining INCLUDES today (old sheet excluded today -> inflated goals).
+   - DAY MATH: computed from calendar dates at midnight (old sheet used
+     clock time, so goals flipped at noon).
+   - OVER-PACE RULE: if a store's trending close rate beats the minimum
+     (7% MCR / 10% FCR), the goal RISES to maintain their trend, flagged
+     stretch:true. Same for GP when gpTrend > assigned target.
+   - GOAL HIT: when need <= 0, status 'hit' and daily = maintenance pace
+     (what it takes per day to keep the achieved rate), never a fake 1.
+   ============================================================ */
+var BFX = (function(){
+  'use strict';
 
-/* ── Periods ── */
-function fisBounds(){          // Fiscal month runs 22nd → 21st
-  var y=now.getFullYear(), m=now.getMonth(), d=now.getDate();
-  if(d>=22) return {s:new Date(y,m,22), e:new Date(y,m+1,21)};
-  return {s:new Date(y,m-1,22), e:new Date(y,m,21)};
-}
-function getF(){
-  var ov=parseInt(document.getElementById('fov').value)||0;
-  var b=fisBounds(), tot=Math.round((b.e-b.s)/864e5)+1;
-  var el=ov>0?ov:Math.round((now-b.s)/864e5)+1;
-  return {el:el, tot:tot, rem:Math.max(1,tot-el)};
-}
-function getC(){
-  var ov=parseInt(document.getElementById('cov').value)||0;
-  var el=ov>0?ov:now.getDate();
-  var tot=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
-  return {el:el, tot:tot, rem:Math.max(1,tot-el)};
-}
-function pf(v){ var n=parseFloat(v); return isNaN(n)?0:n; }
-function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+  // ---- Company standards (single source of truth) ----
+  var STD = {
+    MCR_MIN: 7,        // % mobile close rate, fiscal
+    FCR_MIN: 10,       // % fiscal close rate (RGUs), fiscal
+    NPS_GOAL: 80,      // tNPS
+    GIG_GOAL: 80,      // % of internet sales on Gig
+    PLUS_GOAL: 75,     // % of mobile lines on Plus
+    ACC_PER_BOX: 20,   // $ accessory per mobile box (was $30 on old daily sheet — wrong)
+    WT_RATE: 2,        // % of traffic -> watch/tablet
+    TSHEET_RATE: 20    // % of traffic -> t-sheets
+  };
 
-/* ── Data source: the same file the upload page writes to ──
-   When this page is hosted inside the Daily-Sales-Report repo, the data sits
-   right next to it at data/Sales Report.xlsx — a same-origin request (most
-   reliable). If that 404s (e.g. hosted elsewhere) we fall back to the absolute
-   raw GitHub URL, then finally to manual upload. */
-var DATA_URLS = [
-  'data/sales.xlsx',                                                                        // same-origin — this repo's own daily upload (Pages serves from branch, so pushes deploy immediately)
-  'https://raw.githubusercontent.com/BlufoxMobile/Daily-Sales-Report/main/data/Sales%20Report.xlsx' // cross-origin fallback
-];
+  var DAY = 86400000;
+  function mid(d){ return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function ceil(x){ return Math.ceil(x - 1e-9); }
 
-/* ── Auto-load on page open ── */
-function loadFromGitHub(){
-  var status=document.getElementById('uzone');
-  if(status){
-    status.querySelector('.tt').textContent='Loading latest report…';
-    status.querySelector('.hh').textContent='Pulling from the Blufox dashboards';
+  // ---- Period math (date-based, stable all day) ----
+  // Fiscal month: 22nd -> 21st. rem INCLUDES today.
+  function fiscalPeriod(now, dayOverride){
+    var t = mid(now||new Date()), y=t.getFullYear(), m=t.getMonth(), d=t.getDate();
+    var s = (d>=22) ? new Date(y,m,22) : new Date(y,m-1,22);
+    var e = (d>=22) ? new Date(y,m+1,21) : new Date(y,m,21);
+    var tot = Math.round((e-s)/DAY)+1;
+    var el  = dayOverride>0 ? dayOverride : Math.round((t-s)/DAY)+1;
+    el = Math.min(Math.max(el,1), tot);
+    return { start:s, end:e, tot:tot, el:el, rem: tot-el+1 };
   }
-  tryFetch(0);
+  function calendarPeriod(now, dayOverride){
+    var t = mid(now||new Date()), y=t.getFullYear(), m=t.getMonth();
+    var tot = new Date(y, m+1, 0).getDate();
+    var el  = dayOverride>0 ? dayOverride : t.getDate();
+    el = Math.min(Math.max(el,1), tot);
+    return { tot:tot, el:el, rem: tot-el+1 };
+  }
+
+  /* ---- Rate-driven unit goal (MCR -> mobile, FCR -> RGU). FISCAL basis.
+     in: { trafDay, mtdUnits, minRate(%), per: fiscalPeriod() }
+     Traffic to date approximated trafDay*el (report gives daily avg, not fiscal MTD).
+     out: { rate, trend, stretch, monthGoal, mtd, need, daily, maintain, status, pct } */
+  function rateGoal(o){
+    var p = o.per, trafDay = o.trafDay>0 ? o.trafDay : 0;
+    if(!trafDay) return { noTraffic:true, rate:o.minRate, trend:0, stretch:false,
+      monthGoal:0, mtd:o.mtdUnits||0, need:0, daily:0, maintain:0, status:'no-data', pct:0 };
+    var trafToDate = trafDay * p.el;
+    var projTraf   = trafDay * p.tot;
+    var mtd   = o.mtdUnits||0;
+    var trend = trafToDate>0 ? (mtd/trafToDate)*100 : 0;
+    var stretch = trend > o.minRate;
+    var rate  = Math.max(o.minRate, trend);          // over-pace rule: raise to trend
+    var monthGoal = ceil((rate/100)*projTraf);       // always round UP
+    var need  = Math.max(0, monthGoal - mtd);
+    var maintain = Math.max(1, ceil((rate/100)*trafDay)); // per-day pace to hold the rate
+    var daily = need>0 ? ceil(need/p.rem) : maintain;
+    var status = need<=0 ? 'hit' : (mtd >= (rate/100)*trafToDate - 1e-9 ? 'on-pace' : 'behind');
+    return { rate:rate, trend:trend, stretch:stretch, monthGoal:monthGoal, mtd:mtd,
+             need:need, daily:daily, maintain:maintain, status:status,
+             pct: monthGoal>0 ? Math.min(100,(mtd/monthGoal)*100) : 0 };
+  }
+
+  /* ---- Amount goal (GP $, Accessory $, W/T units). CALENDAR basis.
+     in: { monthGoal, trendGoal(optional, e.g. gpTrend), mtd, per: calendarPeriod(), roundTo }
+     Jeff's example: goal $50,000, trending $48,000 -> gap $2,000 / days left
+     is added on top of pace. Implemented as need/rem which is equivalent. */
+  function amountGoal(o){
+    var p = o.per;
+    var base = o.monthGoal||0;
+    var stretch = (o.trendGoal||0) > base;
+    var goal = Math.max(base, o.trendGoal||0);       // over-pace rule
+    var mtd  = o.mtd||0;
+    var need = Math.max(0, goal - mtd);
+    var maintain = Math.max(0, ceil(goal/p.tot));
+    var daily = need>0 ? ceil(need/p.rem) : maintain;
+    var paceMTD = goal*(p.el/p.tot);
+    var status = need<=0 ? 'hit' : (mtd >= paceMTD-1e-9 ? 'on-pace' : 'behind');
+    if(o.roundTo){ daily = Math.ceil(daily/o.roundTo)*o.roundTo; }
+    return { goal:goal, stretch:stretch, mtd:mtd, need:need, daily:daily,
+             maintain:maintain, status:status,
+             pct: goal>0 ? Math.min(100,(mtd/goal)*100) : 0,
+             gapToPace: Math.max(0, paceMTD-mtd) };
+  }
+
+  /* ---- Mix goal (NPS, Gig %, Plus %): how many more "good" outcomes
+     in a row to reach the goal share. n = ceil((g*base - num)/(1-g)).
+     NPS: num = promoters - detractors, base = total surveys, g = 0.80.
+     Gig: num = gig sales, base = internet sales. Plus: plus lines / mobile lines. */
+  function mixGoal(o){
+    var g = (o.goalPct||0)/100, num = o.num||0, base = o.base||0;
+    var cur = base>0 ? (num/base)*100 : null;
+    if(cur===null) return { cur:null, needed:null, status:'no-data', goalPct:o.goalPct };
+    if(cur >= o.goalPct) return { cur:cur, needed:0, status:'hit', goalPct:o.goalPct };
+    var needed = g>=1 ? Infinity : Math.max(1, ceil((g*base - num)/(1-g)));
+    return { cur:cur, needed:needed, status:'behind', goalPct:o.goalPct };
+  }
+
+  /* ---- Full store computation ----
+     s: { trafDay, fMob, fInst,            // fiscal MTD mobile / RGU installs
+          gpTarget (from target-summary.json, fallback report col P),
+          gpTrend, gpMTD,
+          accMTD, wtMTD,
+          npsProm, npsDet, npsTotal,       // optional (Medallia MTD)
+          gigNum, gigBase, plusNum, plusBase } // optional
+     opts: { now, fiscalDayOverride, calDayOverride } */
+  function storeGoals(s, opts){
+    opts = opts||{};
+    var fp = fiscalPeriod(opts.now, opts.fiscalDayOverride||0);
+    var cp = calendarPeriod(opts.now, opts.calDayOverride||0);
+
+    var mobile = rateGoal({ trafDay:s.trafDay, mtdUnits:s.fMob, minRate:STD.MCR_MIN, per:fp });
+    var rgu    = rateGoal({ trafDay:s.trafDay, mtdUnits:s.fInst, minRate:STD.FCR_MIN, per:fp });
+
+    // Accessory month goal = $20 x mobile month goal (unit-consistent with planner)
+    var accMonth = STD.ACC_PER_BOX * mobile.monthGoal;
+    var acc = amountGoal({ monthGoal:accMonth, mtd:s.accMTD, per:cp, roundTo:5 });
+
+    var wtMonth = ceil((STD.WT_RATE/100) * (s.trafDay||0) * cp.tot);
+    var wt = amountGoal({ monthGoal:wtMonth, mtd:s.wtMTD, per:cp });
+
+    var gp = amountGoal({ monthGoal:s.gpTarget||0, trendGoal:s.gpTrend||0,
+                          mtd:s.gpMTD||0, per:cp, roundTo:25 });
+
+    var out = { period:{fiscal:fp, calendar:cp}, std:STD,
+                mobile:mobile, rgu:rgu, acc:acc, wt:wt, gp:gp };
+
+    if(s.npsTotal!=null) out.nps  = mixGoal({ goalPct:STD.NPS_GOAL,
+      num:(s.npsProm||0)-(s.npsDet||0), base:s.npsTotal });
+    if(s.gigBase!=null)  out.gig  = mixGoal({ goalPct:STD.GIG_GOAL,  num:s.gigNum,  base:s.gigBase });
+    if(s.plusBase!=null) out.plus = mixGoal({ goalPct:STD.PLUS_GOAL, num:s.plusNum, base:s.plusBase });
+    return out;
+  }
+
+  return { STD:STD, fiscalPeriod:fiscalPeriod, calendarPeriod:calendarPeriod,
+           rateGoal:rateGoal, amountGoal:amountGoal, mixGoal:mixGoal, storeGoals:storeGoals };
+})();
+if (typeof module!=='undefined' && module.exports) module.exports = BFX;
+/* ============================================================ END BFX ENGINE */
+
+/* ══════════════════════════════════════════════════════════
+   DAILY TARGETS APP — data loading, parsing, rendering.
+   All goal math lives in BFX above (do not fork it here).
+   ══════════════════════════════════════════════════════════ */
+(function(){
+'use strict';
+
+var S = [];                    // parsed stores
+var TARGETS = {};              // target-summary.json, keyed by normalized store name
+var targetsLoaded = false;
+var gpColIdx = -1;             // real GP-MTD column, if the report has one
+var lastLoaded = null;         // Date of last successful report load
+var lastSource = '';
+
+var DATA_URLS = [
+  'data/Sales%20Report.xlsx',
+  'https://raw.githubusercontent.com/BlufoxMobile/Daily-Sales-Report/main/data/Sales%20Report.xlsx'
+];
+var TARGETS_URL = 'https://raw.githubusercontent.com/BlufoxMobile/Daily-Sales-Report/main/data/target-summary.json';
+
+/* ── Helpers ── */
+function pf(v){
+  if(typeof v==='number') return isFinite(v)?v:0;
+  var n = parseFloat(String(v==null?'':v).replace(/[$,%\s]/g,''));
+  return isNaN(n)?0:n;
+}
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function norm(s){ return String(s==null?'':s).trim().toLowerCase(); }
+function money(n){ return '$'+Math.round(n).toLocaleString('en-US'); }
+function pct1(n){ return (Math.round(n*10)/10).toFixed(1); }
+function $(id){ return document.getElementById(id); }
+
+/* ── Period helpers (delegates to BFX so overrides match the engine) ── */
+function opts(){
+  return {
+    fiscalDayOverride: parseInt($('fov').value,10)||0,
+    calDayOverride:    parseInt($('cov').value,10)||0
+  };
+}
+function periods(){
+  var o = opts();
+  return {
+    f: BFX.fiscalPeriod(new Date(), o.fiscalDayOverride),
+    c: BFX.calendarPeriod(new Date(), o.calDayOverride)
+  };
 }
 
+/* ── target-summary.json (assigned monthly GP targets) ── */
+function loadTargets(){
+  return fetch(TARGETS_URL + '?t=' + Date.now())
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.json(); })
+    .then(function(j){
+      TARGETS = {};
+      Object.keys(j||{}).forEach(function(k){
+        if(j[k] && typeof j[k]==='object') TARGETS[norm(k)] = j[k];
+      });
+      targetsLoaded = true;
+    })
+    .catch(function(err){
+      console.warn('target-summary.json unavailable, falling back to report col P:', err.message);
+      targetsLoaded = false;
+    });
+}
+
+/* ── Report auto-load (same-origin first, then raw GitHub, then manual) ── */
+function loadAll(){
+  if(!S.length) setState('Pulling the latest sales report…', 'Auto-loading from the Blufox dashboards. You can also drop the .xlsx here or click to browse.');
+  loadTargets().then(function(){ tryFetch(0); });
+}
 function tryFetch(i){
   if(i >= DATA_URLS.length){
-    // All sources failed — show manual upload
-    var status=document.getElementById('uzone');
-    if(status){
-      status.querySelector('.tt').textContent='Drop your sales report here';
-      status.querySelector('.hh').textContent='Auto-load unavailable here — upload manually (.xlsx)';
-    }
+    if(S.length){ console.warn('Auto-refresh failed; keeping last loaded data.'); return; }
+    setState('Couldn’t auto-load the report',
+      'The report file isn’t reachable from here right now. Drop today’s Sales Report.xlsx onto this box, or click to browse for it — everything else works the same.');
     return;
   }
   fetch(DATA_URLS[i] + '?t=' + Date.now())
-    .then(function(resp){
-      if(!resp.ok) throw new Error('HTTP '+resp.status);
-      return resp.arrayBuffer();
-    })
+    .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.arrayBuffer(); })
     .then(function(buf){
-      var wb=XLSX.read(buf,{type:'array'});
+      var wb = XLSX.read(buf,{type:'array'});
+      lastSource = i===0 ? 'repo copy' : 'Daily-Sales-Report';
       parseWorkbook(wb);
     })
     .catch(function(err){
-      console.warn('Source '+(i+1)+' failed:', err.message);
-      tryFetch(i+1);   // try the next source
+      console.warn('Report source '+(i+1)+' failed:', err.message);
+      tryFetch(i+1);
     });
 }
-
-/* ── Manual file upload (fallback) ── */
-function load(file){
+function loadFile(file){
   if(!file) return;
-  var reader=new FileReader();
-  reader.onload=function(e){
+  var reader = new FileReader();
+  reader.onload = function(e){
     try{
-      var wb=XLSX.read(e.target.result,{type:'array'});
-      parseWorkbook(wb);
-    }catch(err){ alert('Error reading file: '+err.message); console.error(err); }
+      var wb = XLSX.read(e.target.result,{type:'array'});
+      lastSource = 'manual upload';
+      var doParse = function(){ parseWorkbook(wb); };
+      if(!targetsLoaded){ loadTargets().then(doParse); } else { doParse(); }
+    }catch(err){
+      setState('That file didn’t parse', 'Make sure it’s the Blufox weekly Sales Report (.xlsx). Error: '+esc(err.message));
+      console.error(err);
+    }
   };
   reader.readAsArrayBuffer(file);
 }
+window.loadFile = loadFile;
 
-/* ── Parse a workbook into store rows + populate UI ── */
+function setState(big, sub){
+  var st=$('loadState'); if(!st) return;
+  st.style.display='';
+  $('stateBig').textContent = big;
+  $('stateSub').innerHTML = sub;
+}
+
+/* ── Parse workbook (column map verified against the live report) ──
+   Header row: the row whose cell === 'rank' (first sheet).
+   B(1) region · C(2) store · E(4) rsd · F(5) dm · G(6) sm
+   L(11) gpTrend · M(12) gpEst · P(15) gpTgt (col-P fallback target)
+   AE(30) Shopper Trak Daily Avg · AM(38) fiscal RGU installs · AN(39) fiscal mobile
+   BM(64) tablet MTD · BN(65) watches MTD · CD(81) Net Profit Accessory */
 function parseWorkbook(wb){
-  var ws=wb.Sheets[wb.SheetNames[0]];
-  var raw=XLSX.utils.sheet_to_json(ws,{header:1, defval:''});
+  var ws = wb.Sheets[wb.SheetNames[0]];
+  var raw = XLSX.utils.sheet_to_json(ws,{header:1, defval:''});
 
-  // Find header row (the one with "Rank" in col A)
-  var hIdx=0;
-  for(var r=0;r<20;r++){
+  var hIdx = 0;
+  outer:
+  for(var r=0;r<Math.min(raw.length,25);r++){
+    var row = raw[r]||[];
     for(var c=0;c<10;c++){
-      if(String((raw[r]||[])[c]).toLowerCase().trim()==='rank'){ hIdx=r; break; }
+      if(norm(row[c])==='rank'){ hIdx=r; break outer; }
     }
-    if(hIdx>0) break;
   }
 
-  S=[];
+  // Optional real GP-MTD column: scan headers, skip trend/target/est columns.
+  gpColIdx = -1;
+  var hdr = raw[hIdx]||[];
+  for(var c=0;c<hdr.length;c++){
+    var h = String(hdr[c]||'').trim();
+    if(!h) continue;
+    if(/trend|target|tgt|est|goal/i.test(h)) continue;
+    if(/gp.*(mtd|month)/i.test(h) || /^gp \$$/i.test(h)){ gpColIdx=c; break; }
+  }
+
+  S = [];
   for(var r=hIdx+1;r<raw.length;r++){
-    var w=raw[r];
+    var w = raw[r];
     if(!w || !w[2]) continue;
-    var nm=String(w[2]).trim();
-    if(!nm || !w[0] || nm.toLowerCase().indexOf('total')>=0) continue;
+    var nm = String(w[2]).trim();
+    if(!nm || w[0]===''||w[0]==null || norm(nm).indexOf('total')>=0) continue;
     S.push({
-      nm:      nm,
-      region:  String(w[1]||'').trim(),
-      rsd:     String(w[4]||'').trim(),
-      dm:      String(w[5]||'').trim() || 'Unassigned',
-      sm:      String(w[6]||'').trim(),
-      gpTrend: pf(w[11]),   // L  GP $ Trend
-      gpEst:   pf(w[12]),   // M  GP $ Est Net Trend
-      gpTgt:   pf(w[15]),   // P  Net Target GP $
-      trafDay: pf(w[30]),   // AE Shopper Trak Daily Avg
-      fInst:   pf(w[38]),   // AM Fiscal Install (all RGUs)
-      fMob:    pf(w[39]),   // AN Mobile Fiscal Install
-      tablet:  pf(w[64]),   // BM Tablet MTD
-      watches: pf(w[65]),   // BN Watches MTD
-      accN:    pf(w[81])    // CD Net Profit Accessory
+      nm:nm,
+      region: String(w[1]||'').trim(),
+      rsd:    String(w[4]||'').trim(),
+      dm:     String(w[5]||'').trim() || 'Unassigned',
+      sm:     String(w[6]||'').trim(),
+      gpTrend:pf(w[11]),
+      gpEst:  pf(w[12]),
+      gpTgtP: pf(w[15]),
+      trafDay:pf(w[30]),
+      fInst:  pf(w[38]),
+      fMob:   pf(w[39]),
+      tablet: pf(w[64]),
+      watches:pf(w[65]),
+      accMTD: pf(w[81]),
+      gpColMTD: gpColIdx>=0 ? pf(w[gpColIdx]) : null
     });
   }
-  if(!S.length){ alert('No store data found. Check the file format.'); return; }
-
-  // Region dropdown
-  var rsel=document.getElementById('rsel');
-  rsel.innerHTML='<option value="ALL">All Regions</option>';
-  var regs={};
-  for(var i=0;i<S.length;i++){ var rg=S[i].region; if(rg) regs[rg]=(regs[rg]||0)+1; }
-  Object.keys(regs).sort().forEach(function(rg){
-    rsel.innerHTML+='<option value="'+esc(rg)+'">'+rg+' ('+regs[rg]+')</option>';
-  });
-
-  // District dropdown — Jeff's DMs starred at top
-  var dsel=document.getElementById('dsel');
-  dsel.innerHTML='';
-  var jD={}, oD={};
-  for(var i=0;i<S.length;i++){
-    var s=S[i];
-    if(s.rsd.toLowerCase().indexOf('bilbrey')>=0) jD[s.dm]=(jD[s.dm]||0)+1;
-    else oD[s.dm]=(oD[s.dm]||0)+1;
-  }
-  Object.keys(jD).sort().forEach(function(d){
-    dsel.innerHTML+='<option value="'+esc(d)+'">★ '+d+' ('+jD[d]+')</option>';
-  });
-  var oK=Object.keys(oD).sort();
-  if(oK.length){
-    dsel.innerHTML+='<option disabled>──────────</option>';
-    oK.forEach(function(d){ dsel.innerHTML+='<option value="'+esc(d)+'">'+d+' ('+oD[d]+')</option>'; });
+  if(!S.length){
+    setState('No store rows found', 'The file loaded but no store data matched the expected layout (header row with “Rank”, store names in column C). Double-check it’s the standard weekly report.');
+    return;
   }
 
-  document.getElementById('fov').value=getF().el;
-  document.getElementById('cov').value=getC().el;
-  document.getElementById('uzone').style.display='none';
-  document.getElementById('dash').style.display='flex';
-  document.getElementById('pbtn').style.display='';
+  buildFilters();
+  lastLoaded = new Date();
+  $('loadState').style.display='none';
   render();
 }
 
-/* ══════════════════════════════════════════════════════════
-   GOAL MATH  (all goals always ≥ 1, always rounded UP)
+/* ── Filters ── */
+function buildFilters(){
+  var rsel=$('rsel'), dsel=$('dsel');
+  var keepR=rsel.value, keepD=dsel.value;
 
-   Traffic projection = Shopper Trak Daily Avg × days in that period.
+  var regs={};
+  S.forEach(function(s){ if(s.region) regs[s.region]=(regs[s.region]||0)+1; });
+  rsel.innerHTML='<option value="ALL">All Regions</option>';
+  Object.keys(regs).sort().forEach(function(rg){
+    rsel.innerHTML+='<option value="'+esc(rg)+'">'+esc(rg)+' ('+regs[rg]+')</option>';
+  });
 
-   1. MOBILE (Fiscal, MCR ≤ 7%)
-      target = 7% × projected fiscal traffic
-      behind → ceil((target − mobile installs) / fiscal days left)
-      on track → ceil(target / fiscal total days)  [maintain pace]
-      Display offset: if mobile goal > 10, subtract watch/tablet goal
-      (watches & tablets count toward MCR, keeps the number from overwhelming staff)
+  var mine={}, other={};
+  S.forEach(function(s){
+    if(norm(s.rsd).indexOf('bilbrey')>=0) mine[s.dm]=(mine[s.dm]||0)+1;
+    else other[s.dm]=(other[s.dm]||0)+1;
+  });
+  dsel.innerHTML='<option value="ALL">All Districts</option>';
+  var mk=Object.keys(mine).sort();
+  mk.forEach(function(d){ dsel.innerHTML+='<option value="'+esc(d)+'">⭐ '+esc(d)+' ('+mine[d]+')</option>'; });
+  var ok=Object.keys(other).sort();
+  if(mk.length && ok.length) dsel.innerHTML+='<option disabled>──────</option>';
+  ok.forEach(function(d){ dsel.innerHTML+='<option value="'+esc(d)+'">'+esc(d)+' ('+(other[d])+')</option>'; });
 
-   2. RGUs (Fiscal, FCR ≥ 10%)
-      target = 10% × projected fiscal traffic
-      behind → ceil((target − fiscal installs) / fiscal days left)
-      on track → ceil(target / fiscal total days)
+  // Restore prior selection, else default to the first starred district.
+  if(keepR && [].some.call(rsel.options,function(o){return o.value===keepR;})) rsel.value=keepR;
+  if(keepD && [].some.call(dsel.options,function(o){return o.value===keepD;})) dsel.value=keepD;
+  else if(mk.length) dsel.value=mk[0];
+}
 
-   3. WATCH/TABLET (Calendar, 2% of monthly traffic)
-      target = 2% × projected calendar traffic
-      daily  = ceil(target / calendar total days)  [steady figure]
+/* ── Engine input per store ── */
+function engineInput(s, cp){
+  var t = TARGETS[norm(s.nm)];
+  var gpTarget = (t && pf(t.gp)>0) ? pf(t.gp) : s.gpTgtP;
+  var gpMTD, gpEstimated=false;
+  if(s.gpColMTD!=null){ gpMTD = s.gpColMTD; }
+  else { gpMTD = s.gpTrend * (cp.el/cp.tot); gpEstimated = true; }  // derive when no GP-MTD column exists
+  return {
+    input:{ trafDay:s.trafDay, fMob:s.fMob, fInst:s.fInst,
+            gpTarget:gpTarget, gpTrend:s.gpTrend, gpMTD:gpMTD,
+            accMTD:s.accMTD, wtMTD:(s.tablet||0)+(s.watches||0) },
+    gpEstimated:gpEstimated
+  };
+}
 
-   4. ACCESSORIES (Fiscal, $30 net per box × mobile target)
-      target = $30 × mobile target
-      behind → ceil((target − acc net profit) / fiscal days left)
-      on track → ceil(target / fiscal total days)
+/* ── Store-level status (for the pill + district counts) ── */
+function storeStatus(g, s){
+  if(!(s.trafDay>0)) return 'nodata';
+  var kpis=[g.mobile,g.rgu,g.wt,g.acc,g.gp];
+  for(var i=0;i<kpis.length;i++) if(kpis[i].status==='behind') return 'behind';
+  if(g.mobile.stretch||g.rgu.stretch||g.gp.stretch) return 'stretch';
+  return 'on';
+}
+var PILL={
+  stretch:{cls:'stretch',txt:'⭐ Stretch — beating minimum'},
+  on:     {cls:'on',     txt:'✅ On pace'},
+  behind: {cls:'behind', txt:'🔻 Behind'},
+  nodata: {cls:'nodata', txt:'⚠ No traffic data'}
+};
 
-   5. GP (Calendar)
-      base = Net Target GP (col P); if base < $40k, add $10k (boost struggling stores)
-      goal = max(boosted base, GP Trend col L)   [let strong stores chase trend]
-      daily = ceil(goal / calendar total days)
-   ══════════════════════════════════════════════════════════ */
-function calc(s){
-  var f=getF(), c=getC();
-  var projF = Math.ceil((s.trafDay||1) * f.tot);
-  var projC = Math.ceil((s.trafDay||1) * c.tot);
-
-  // 1. MOBILE
-  var mobTgt  = Math.floor((TH.mcr/100) * projF);
-  var mobNeed = Math.max(0, mobTgt - s.fMob);
-  var mobD    = mobNeed===0 ? Math.max(1, Math.ceil(mobTgt/f.tot))
-                            : Math.ceil(mobNeed / f.rem);
-
-  // 2. RGU
-  var rguTgt  = Math.ceil((TH.fcr/100) * projF);
-  var rguNeed = Math.max(0, rguTgt - s.fInst);
-  var rguD    = rguNeed===0 ? Math.max(1, Math.ceil(rguTgt/f.tot))
-                            : Math.ceil(rguNeed / f.rem);
-
-  // 3. WATCH/TABLET
-  var wtTgt = Math.ceil((TH.wt/100) * projC);
-  var wtD   = Math.max(1, Math.ceil(wtTgt / c.tot));
-
-  // 4. ACCESSORIES
-  var accTgt  = Math.round(TH.acc * mobTgt);
-  var accNeed = Math.max(0, accTgt - Math.round(s.accN));
-  var accD    = accNeed===0 ? Math.max(1, Math.ceil(accTgt/f.tot))
-                            : Math.ceil(accNeed / f.rem);
-
-  // 5. GP
-  var gpBase = s.gpTgt < TH.gpFloor ? s.gpTgt + TH.gpBoost : s.gpTgt;
-  var gpGoal = Math.max(gpBase, s.gpTrend);
-  var gpD    = Math.max(1, Math.ceil(gpGoal / c.tot));
-
-  // Mobile display offset (watches/tablets count toward MCR)
-  var mobDisp = mobD > 10 ? Math.max(1, mobD - wtD) : mobD;
-
-  return { mob:mobDisp, rgu:rguD, wt:wtD, acc:accD, gp:gpD };
+/* ── Tile renderer ── */
+function tile(o){
+  /* o: {icon,label,kpi,unit(money|units),rateLine,estimated,noData} */
+  var k=o.kpi;
+  if(o.noData){
+    return '<div class="tile t-nodata"><div class="k-head">'+o.icon+' '+o.label+'</div>'
+      +'<div class="goal">—</div>'
+      +'<div class="line muted">No Shopper Trak traffic on the report — goal can’t be paced.</div></div>';
+  }
+  var isMoney = o.unit==='money';
+  var fmt = isMoney ? money : function(n){ return Math.round(n).toLocaleString('en-US'); };
+  var tCls='', bCls='', note='';
+  if(k.status==='hit'){
+    tCls=' t-hit'; bCls=' b-hit';
+    note='<div class="note hit">✓ goal hit — maintain '+fmt(k.maintain)+'/day</div>';
+  } else if(k.stretch){
+    tCls=' t-stretch'; bCls=' b-stretch';
+    note='<div class="note up">↑ matching your trend</div>';
+  } else if(k.status==='behind'){ bCls=' b-behind'; }
+  var goalNum = k.status==='hit' ? k.maintain : k.daily;
+  var pctTxt = Math.round(k.pct)+'%';
+  var estMark = o.estimated ? '~' : '';
+  var html='<div class="tile'+tCls+'">'
+    +'<div class="k-head">'+o.icon+' '+o.label+'</div>'
+    +'<div class="goal">'+fmt(goalNum)+'<span class="unit">'+(k.status==='hit'?'/day to hold':'today')+'</span></div>'
+    +'<span class="pct">'+estMark+pctTxt+'</span>'
+    +'<div class="bar'+bCls+'"><i style="width:'+Math.max(2,Math.min(100,k.pct))+'%"></i></div>'
+    +'<div class="line">MTD <b>'+estMark+fmt(k.mtd)+'</b> of <b>'+fmt(o.monthGoal)+'</b>'
+    +(k.need>0 ? ' <span class="muted">· need '+fmt(k.need)+' more</span>' : '')
+    +'</div>';
+  if(o.rateLine) html+='<div class="line muted">'+o.rateLine+'</div>';
+  html+=note+'</div>';
+  return html;
 }
 
 /* ── Render ── */
 function render(){
-  var f=getF(), c=getC();
-  document.getElementById('cv').textContent=c.el+'/'+c.tot;
-  document.getElementById('cr').textContent=c.rem+'d left';
-  document.getElementById('fv').textContent=f.el+'/'+f.tot;
-  document.getElementById('fr').textContent=f.rem+'d left';
+  var p = periods();
+  $('dateline').innerHTML =
+    'Fiscal day <b>'+p.f.el+'</b> of <b>'+p.f.tot+'</b><span class="dot">·</span>'
+    +'Calendar day <b>'+p.c.el+'</b> of <b>'+p.c.tot+'</b><span class="dot">·</span>'
+    +'<b>'+p.f.rem+'</b> fiscal / <b>'+p.c.rem+'</b> calendar days left';
 
-  var dm=document.getElementById('dsel').value;
-  var rg=document.getElementById('rsel').value;
-  var stores=[];
-  for(var i=0;i<S.length;i++){
-    if(S[i].dm!==dm) continue;
-    if(rg!=='ALL' && S[i].region!==rg) continue;
-    stores.push(S[i]);
+  if(lastLoaded){
+    $('stamp').innerHTML = 'Report loaded '+lastLoaded.toLocaleString('en-US',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})
+      +' from '+esc(lastSource)
+      +' · GP targets: '+(targetsLoaded?'<span class="ok">target-summary.json</span>':'<span class="warn">report col P (target file unavailable)</span>')
+      +' · refreshes every 30 min';
   }
-  stores.sort(function(a,b){ return a.nm.localeCompare(b.nm); });
 
+  if(!S.length) return;
+
+  var rg=$('rsel').value, dm=$('dsel').value;
+  var stores=S.filter(function(s){
+    if(rg!=='ALL' && s.region!==rg) return false;
+    if(dm!=='ALL' && s.dm!==dm) return false;
+    return true;
+  });
+
+  var board=$('board');
   if(!stores.length){
-    document.getElementById('dash').innerHTML='<div style="color:var(--dim)">No stores match this filter.</div>';
+    board.innerHTML='<div class="state" style="cursor:default"><div class="icon">🔍</div><div class="big">No stores match this filter</div><div class="sub">Try a different region or district.</div></div>';
     return;
   }
 
-  var h='<div id="scaler"><div class="box"><div class="box-title">🎯 <span>Daily Goals</span></div><table><thead><tr>';
-  h+='<th style="color:var(--dim)">Store</th>';
-  h+='<th class="h-mob">📱 Mobile</th>';
-  h+='<th class="h-rgu">🏠 RGUs</th>';
-  h+='<th class="h-wt">⌚ Watch / Tab</th>';
-  h+='<th class="h-acc">🎧 Acc $</th>';
-  h+='<th class="h-gp">💰 GP $</th>';
-  h+='</tr></thead><tbody>';
+  // Group by district; starred (bilbrey) districts first.
+  var groups={}, order=[];
+  stores.forEach(function(s){
+    if(!groups[s.dm]){ groups[s.dm]={ name:s.dm, mine:norm(s.rsd).indexOf('bilbrey')>=0, stores:[] }; order.push(s.dm); }
+    if(norm(s.rsd).indexOf('bilbrey')>=0) groups[s.dm].mine=true;
+    groups[s.dm].stores.push(s);
+  });
+  order.sort(function(a,b){
+    var ga=groups[a], gb=groups[b];
+    if(ga.mine!==gb.mine) return ga.mine?-1:1;
+    return a.localeCompare(b);
+  });
 
-  var t={mob:0,rgu:0,wt:0,acc:0,gp:0};
-  for(var i=0;i<stores.length;i++){
-    var g=calc(stores[i]);
-    t.mob+=g.mob; t.rgu+=g.rgu; t.wt+=g.wt; t.acc+=g.acc; t.gp+=g.gp;
-    h+='<tr>';
-    h+='<td>'+esc(stores[i].nm)+'<span class="sm">'+esc(stores[i].sm)+'</span></td>';
-    h+='<td>'+g.mob+'</td>';
-    h+='<td>'+g.rgu+'</td>';
-    h+='<td>'+g.wt+'</td>';
-    h+='<td>$'+kF(g.acc)+'</td>';
-    h+='<td>$'+kF(g.gp)+'</td>';
-    h+='</tr>';
-  }
-  h+='<tr class="tot"><td>DISTRICT</td>';
-  h+='<td>'+t.mob+'</td><td>'+t.rgu+'</td><td>'+t.wt+'</td><td>$'+kF(t.acc)+'</td><td>$'+kF(t.gp)+'</td>';
-  h+='</tr></tbody></table></div></div>';
+  var o = opts();
+  var html='';
+  order.forEach(function(dName){
+    var grp=groups[dName];
+    grp.stores.sort(function(a,b){ return a.nm.localeCompare(b.nm); });
 
-  document.getElementById('dash').innerHTML=h;
-  fitToScreen();
+    var sum={mob:0,rgu:0,wt:0,acc:0,gp:0}, cnt={behind:0,on:0,stretch:0,nodata:0};
+    var cards='';
+    grp.stores.forEach(function(s){
+      var cp = BFX.calendarPeriod(new Date(), o.calDayOverride);
+      var ei = engineInput(s, cp);
+      var g = BFX.storeGoals(ei.input, o);
+      var st = storeStatus(g, s);
+      cnt[st]++;
+      // District totals are the REAL engine dailies (maintain pace when hit) — no display offsets.
+      sum.mob += g.mobile.status==='hit'?g.mobile.maintain:g.mobile.daily;
+      sum.rgu += g.rgu.status==='hit'?g.rgu.maintain:g.rgu.daily;
+      sum.wt  += g.wt.status==='hit'?g.wt.maintain:g.wt.daily;
+      sum.acc += g.acc.status==='hit'?g.acc.maintain:g.acc.daily;
+      sum.gp  += g.gp.status==='hit'?g.gp.maintain:g.gp.daily;
+
+      var pill=PILL[st];
+      var noTraf = !(s.trafDay>0);
+      cards+='<div class="card">'
+        +'<div class="card-head"><h3>'+esc(s.nm)+'</h3>'
+        +(s.sm?'<span class="sm-name">'+esc(s.sm)+'</span>':'')
+        +'<span class="pill '+pill.cls+'">'+pill.txt+'</span></div>'
+        +'<div class="tiles">'
+        +tile({icon:'📱',label:'Mobile',kpi:g.mobile,unit:'units',monthGoal:g.mobile.monthGoal,noData:noTraf,
+               rateLine:noTraf?'':'trending '+pct1(g.mobile.trend)+'% · min '+BFX.STD.MCR_MIN+'%'})
+        +tile({icon:'🏠',label:'RGU',kpi:g.rgu,unit:'units',monthGoal:g.rgu.monthGoal,noData:noTraf,
+               rateLine:noTraf?'':'trending '+pct1(g.rgu.trend)+'% · min '+BFX.STD.FCR_MIN+'%'})
+        +tile({icon:'⌚',label:'W/T',kpi:g.wt,unit:'units',monthGoal:g.wt.goal,noData:noTraf})
+        +tile({icon:'🎧',label:'Acc $',kpi:g.acc,unit:'money',monthGoal:g.acc.goal,noData:noTraf})
+        +tile({icon:'💰',label:'GP $',kpi:g.gp,unit:'money',monthGoal:g.gp.goal,estimated:ei.gpEstimated})
+        +'</div></div>';
+    });
+
+    html+='<section class="district">'
+      +'<div class="dist-head"><h2>'+(grp.mine?'<span class="star">⭐</span> ':'')+esc(dName)+'</h2>'
+      +'<span class="meta">'+grp.stores.length+' store'+(grp.stores.length>1?'s':'')+'</span></div>'
+      +'<div class="dist-sum"><span class="lbl">District today</span>'
+      +'<span class="kv"><span class="k">📱 Mobile</span><span class="v">'+sum.mob+'</span></span>'
+      +'<span class="kv"><span class="k">🏠 RGU</span><span class="v">'+sum.rgu+'</span></span>'
+      +'<span class="kv"><span class="k">⌚ W/T</span><span class="v">'+sum.wt+'</span></span>'
+      +'<span class="kv"><span class="k">🎧 Acc</span><span class="v">'+money(sum.acc)+'</span></span>'
+      +'<span class="kv"><span class="k">💰 GP</span><span class="v">'+money(sum.gp)+'</span></span>'
+      +'<span class="divider"></span>'
+      +'<span class="counts">'
+      +(cnt.behind?'<span class="chip r">'+cnt.behind+' behind</span>':'')
+      +(cnt.on?'<span class="chip g">'+cnt.on+' on pace</span>':'')
+      +(cnt.stretch?'<span class="chip a">'+cnt.stretch+' stretch</span>':'')
+      +(cnt.nodata?'<span class="chip n">'+cnt.nodata+' no traffic</span>':'')
+      +'</span></div>'
+      +'<div class="stores">'+cards+'</div></section>';
+  });
+
+  board.innerHTML=html;
 }
+window.render = render;
 
-/* ── Auto-fit: scale the box to fill whatever screen it's on ──
-   Measures the box at its fixed design size, then scales it so it fits the
-   available area (width AND height). Phones shrink it, TVs blow it up.
-   Caps the upscale so it stays crisp on huge displays. */
-function fitToScreen(){
-  var dash=document.getElementById('dash');
-  var scaler=document.getElementById('scaler');
-  if(!dash || !scaler) return;
-  scaler.style.transform='scale(1)';           // reset to measure natural size
-  var bw=scaler.offsetWidth, bh=scaler.offsetHeight;
-  if(!bw || !bh) return;
-  var availW=dash.clientWidth  - 16;            // small breathing room
-  var availH=dash.clientHeight - 16;
-  var scale=Math.min(availW/bw, availH/bh);
-  scale=Math.min(scale, 3);                     // don't over-blow on giant TVs
-  scale=Math.max(scale, 0.2);                   // floor for tiny screens
-  scaler.style.transform='scale('+scale+')';
-}
-window.addEventListener('resize', fitToScreen);
-window.addEventListener('orientationchange', function(){ setTimeout(fitToScreen, 200); });
-
-function kF(n){
-  if(n>=100000) return (n/1000).toFixed(0)+'k';
-  if(n>=10000)  return (n/1000).toFixed(1)+'k';
-  if(n<0)       return '0';
-  return n.toLocaleString('en-US',{maximumFractionDigits:0});
-}
-
-/* Auto-pull the latest uploaded report on load, and refresh every 30 min */
-loadFromGitHub();
-setInterval(loadFromGitHub, 1800000);
+/* ── Boot ── */
+render();                       // show period line immediately
+loadAll();                      // auto-pull report + targets
+setInterval(loadAll, 1800000);  // refresh every 30 min
+})();
 </script>
 </body>
 </html>
